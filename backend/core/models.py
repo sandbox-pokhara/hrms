@@ -63,12 +63,12 @@ class Project(BaseModel):
 
 class TimeLog(BaseModel):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="timelog"
+        User, on_delete=models.CASCADE, related_name="time_logs"
     )
     begin = models.DateTimeField()
     end = models.DateTimeField()
     project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, related_name="timelog"
+        Project, on_delete=models.CASCADE, related_name="time_logs"
     )
     activity = models.CharField()
 
@@ -80,7 +80,7 @@ class Holiday(BaseModel):
 
 class AbsenceBalance(BaseModel):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="absence_transaction_user"
+        User, on_delete=models.CASCADE, related_name="user_absence_balances"
     )
     date = models.DateTimeField()
     name = models.CharField(max_length=500)
@@ -88,5 +88,5 @@ class AbsenceBalance(BaseModel):
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="absence_transaction_created_by",
+        related_name="created_absence_balances",
     )
