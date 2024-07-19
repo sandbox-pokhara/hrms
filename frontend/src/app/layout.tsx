@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sandbox HRMS",
+  title: "Dashboard - Sandbox HRMS",
   description: "Human Resource Management System",
 };
 
