@@ -80,7 +80,7 @@ class Holiday(BaseModel):
 
 class AbsenceBalance(BaseModel):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_absence_balances"
+        User, on_delete=models.CASCADE, related_name="absence_balances"
     )
     date = models.DateTimeField()
     name = models.CharField(max_length=500)
