@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
-
-# from django.contrib.auth.models import UserManager
 from django.db import models
 
 
@@ -57,3 +55,38 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.username
+
+
+class Project(BaseModel):
+    name = models.CharField()
+
+
+class TimeLog(BaseModel):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="timelog"
+    )
+    begin = models.DateTimeField()
+    end = models.DateTimeField()
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="timelog"
+    )
+    activity = models.CharField()
+
+
+class Holiday(BaseModel):
+    name = models.CharField()
+    begin = models.DateTimeField()
+
+
+class AbsenceTransaction(BaseModel):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="absence_transaction_user"
+    )
+    date = models.DateTimeField()
+    name = models.CharField(max_length=500)
+    delta = models.IntegerField()
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="absence_transaction_created_by",
+    )
