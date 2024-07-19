@@ -64,7 +64,7 @@ class NeedSetupDTO(Serializer[Any]):
 class PostRegister(ModelSerializer[models.User]):
     class Meta:
         model = models.User
-        fields = ["username", "password"]
+        fields = ["username", "email", "password"]
 
 
 class PostLogin(Serializer[Any]):
