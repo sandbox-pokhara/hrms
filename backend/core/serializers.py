@@ -3,6 +3,7 @@ from typing import TypeVar
 
 from core import models
 from django.db.models import Model
+from django.forms import BooleanField
 from rest_framework import serializers
 from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer
@@ -51,3 +52,21 @@ class UserDTO(RequiredFieldsModelSerializer[models.User]):
 ##############################################################################
 class GenericDTO(Serializer[Any]):
     detail = CharField()
+
+
+class NeedSetupDTO(Serializer[Any]):
+    detail = BooleanField()
+
+
+##############################################################################
+### Model Post Request Body
+##############################################################################
+class PostRegister(ModelSerializer[models.User]):
+    class Meta:
+        model = models.User
+        fields = ["username", "password"]
+
+
+class PostLogin(Serializer[Any]):
+    username = CharField()
+    password = CharField()
