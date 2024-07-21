@@ -43,6 +43,46 @@ async function getCurrentTimeLog() {
   }
 }
 
+async function fetchProjects() {
+  const cookieStore = cookies();
+  const sessionid = cookieStore.get("sessionid");
+  if (!sessionid) redirect("/login/");
+  try {
+    const res = await fetch(`${API_HOST}/api/projects/`, {
+      method: "GET",
+      headers: {
+        Cookie: `sessionid=${sessionid.value}`,
+      },
+    });
+    if (!res.ok) {
+      return;
+    }
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
+async function fetchActivities() {
+  const cookieStore = cookies();
+  const sessionid = cookieStore.get("sessionid");
+  if (!sessionid) redirect("/login/");
+  try {
+    const res = await fetch(`${API_HOST}/api/activities/`, {
+      method: "GET",
+      headers: {
+        Cookie: `sessionid=${sessionid.value}`,
+      },
+    });
+    if (!res.ok) {
+      return;
+    }
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
 export default async function MainLayout({
   active,
   children,
@@ -50,7 +90,11 @@ export default async function MainLayout({
   active: "dashboard" | "time-logs" | "time-summary" | "holidays" | "absenses";
   children: React.ReactNode;
 }>) {
-  const currentTimeLog = await getCurrentTimeLog();
+  const [currentTimeLog, projects, activities] = await Promise.all([
+    getCurrentTimeLog(),
+    fetchProjects(),
+    fetchActivities(),
+  ]);
 
   return (
     <>
@@ -106,7 +150,11 @@ export default async function MainLayout({
               </nav>
             </div>
             <div className="mt-auto p-4">
-              <TimeLogCard initial={currentTimeLog} />
+              <TimeLogCard
+                initial={currentTimeLog}
+                projects={projects}
+                activities={activities}
+              />
             </div>
           </div>
         </div>
@@ -172,7 +220,11 @@ export default async function MainLayout({
                   </Link>
                 </nav>
                 <div className="mt-auto">
-                  <TimeLogCard initial={currentTimeLog} />
+                  <TimeLogCard
+                    initial={currentTimeLog}
+                    projects={projects}
+                    activities={activities}
+                  />
                 </div>
               </SheetContent>
             </Sheet>

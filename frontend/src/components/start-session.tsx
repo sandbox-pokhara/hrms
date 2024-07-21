@@ -15,72 +15,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { API_HOST } from "@/lib/constants";
 import { components } from "@/lib/schema";
-import { getCookie } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "./ui/use-toast";
 
 interface Props {
   onSubmit: (projectId: number, activityId: number) => void;
+  projects: components["schemas"]["PagedProjectDTO"];
+  activities: components["schemas"]["PagedActivityDTO"];
 }
 
-export function StartSession({ onSubmit }: Props) {
-  const [activities, setActivities] = useState<
-    components["schemas"]["ActivityDTO"][]
-  >([]);
-  const [projects, setProjects] = useState<
-    components["schemas"]["ProjectDTO"][]
-  >([]);
+export function StartSession({ onSubmit, projects, activities }: Props) {
   const [selectedActivityId, setSelectedActivityId] = useState<
     number | undefined
   >(undefined);
   const [selectedProjectId, setSelectedProjectId] = useState<
     number | undefined
   >(undefined);
-
-  const fetchProjects = async () => {
-    const csrftoken = getCookie("csrftoken");
-    if (!csrftoken) return null;
-    try {
-      const res = await fetch(`${API_HOST}/api/projects/`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "X-CSRFToken": csrftoken,
-        },
-      });
-      if (!res.ok) {
-        return;
-      }
-      const data = await res.json();
-      setProjects(data?.items);
-    } catch (err) {}
-  };
-
-  const fetchActivities = async () => {
-    const csrftoken = getCookie("csrftoken");
-    if (!csrftoken) return null;
-    try {
-      const res = await fetch(`${API_HOST}/api/activities/`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "X-CSRFToken": csrftoken,
-        },
-      });
-      if (!res.ok) {
-        return;
-      }
-      const data = await res.json();
-      setActivities(data?.items);
-    } catch (err) {}
-  };
-
-  useEffect(() => {
-    fetchProjects();
-    fetchActivities();
-  }, []);
 
   return (
     <Dialog>
@@ -103,7 +54,7 @@ export function StartSession({ onSubmit }: Props) {
                 <SelectValue placeholder="Select Project" />
               </SelectTrigger>
               <SelectContent>
-                {projects.map((project, i) => (
+                {projects?.items.map((project, i) => (
                   <SelectItem value={String(project.id)} key={i}>
                     {project.name}
                   </SelectItem>
@@ -120,7 +71,7 @@ export function StartSession({ onSubmit }: Props) {
                 <SelectValue placeholder="Select Activity" />
               </SelectTrigger>
               <SelectContent>
-                {activities.map((activity, i) => (
+                {activities?.items.map((activity, i) => (
                   <SelectItem value={String(activity.id)} key={i}>
                     {activity.name}
                   </SelectItem>

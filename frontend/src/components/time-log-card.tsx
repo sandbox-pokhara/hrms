@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { API_HOST } from "@/lib/constants";
 import { components } from "@/lib/schema";
 import { getCookie, getDuration } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -16,8 +15,12 @@ import { StartSession } from "./start-session";
 
 export default function TimeLogCard({
   initial,
+  projects,
+  activities,
 }: {
   initial: components["schemas"]["TimeLogDTO"];
+  projects: components["schemas"]["PagedProjectDTO"];
+  activities: components["schemas"]["PagedActivityDTO"];
 }) {
   const router = useRouter();
 
@@ -52,9 +55,8 @@ export default function TimeLogCard({
           onClick={async () => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return false;
-            const res = await fetch(`${API_HOST}/api/time-logs/end/`, {
+            const res = await fetch(`/api/time-logs/end/`, {
               method: "POST",
-              credentials: "include",
               headers: {
                 "X-CSRFToken": csrftoken,
               },
@@ -80,9 +82,8 @@ export default function TimeLogCard({
           onSubmit={async (projectId, activityId) => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return null;
-            const res = await fetch(`${API_HOST}/api/time-logs/start/`, {
+            const res = await fetch(`/api/time-logs/start/`, {
               method: "POST",
-              credentials: "include",
               headers: {
                 "X-CSRFToken": csrftoken,
               },
@@ -96,6 +97,8 @@ export default function TimeLogCard({
             const data = await res.json();
             if (data) setCurrentTimeLog(data);
           }}
+          projects={projects}
+          activities={activities}
         />
       </CardContent>
     </Card>

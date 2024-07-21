@@ -23,7 +23,6 @@ export default function LoginForm() {
         if (!csrftoken) return false;
         const res = await fetch(`${API_HOST}/api/auth/login/`, {
           method: "POST",
-          credentials: "include",
           headers: {
             "X-CSRFToken": csrftoken,
           },
