@@ -350,6 +350,8 @@ export interface components {
             project__name: string;
             /** Activity  Name */
             activity__name: string;
+            /** User  Username */
+            user__username: string;
             /** ID */
             id?: number | null;
             /**
@@ -618,6 +620,15 @@ export interface operations {
         responses: {
             /** @description OK */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -17,6 +17,7 @@ class UserDTO(ModelSchema):
 class TimeLogDTO(ModelSchema):
     project__name: str = Field(..., alias="project.name")
     activity__name: str = Field(..., alias="activity.name")
+    user__username: str = Field(..., alias="user.username")
 
     class Meta:
         model = TimeLog
