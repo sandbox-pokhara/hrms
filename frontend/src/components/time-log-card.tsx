@@ -12,7 +12,7 @@ import { components } from "@/lib/schema";
 import { getCookie, getDuration } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { StartSession } from "./start-sessin";
+import { StartSession } from "./start-session";
 
 export default function TimeLogCard({
   initial,
