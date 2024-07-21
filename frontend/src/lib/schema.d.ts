@@ -350,8 +350,8 @@ export interface components {
             project__name: string;
             /** Activity  Name */
             activity__name: string;
-            /** Username */
-            username: string;
+            /** User  Username */
+            user__username: string;
             /** ID */
             id?: number | null;
             /**
@@ -364,6 +364,8 @@ export interface components {
              * Format: date-time
              */
             date_modified: string;
+            /** User */
+            user: number;
             /**
              * Begin
              * Format: date-time

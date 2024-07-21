@@ -76,7 +76,7 @@ export default async function TimeLogs() {
                 </TableCell>
                 <TableCell>{i.project__name}</TableCell>
                 <TableCell>{i.activity__name}</TableCell>
-                <TableCell>{i.username}</TableCell>
+                <TableCell>{i.user__username}</TableCell>
               </TableRow>
             ))}
           </TableBody>
