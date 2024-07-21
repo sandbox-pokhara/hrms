@@ -39,7 +39,6 @@ async function getCurrentTimeLog() {
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
@@ -75,14 +74,14 @@ export default async function MainLayout({
                   Dashboard
                 </Link>
                 <Link
-                  href="/time-logs"
+                  href="/time-logs/"
                   className={active === "time-logs" ? activeLink : inactiveLink}
                 >
                   <CalendarCheck2 className="h-4 w-4" />
                   Time Logs
                 </Link>
                 <Link
-                  href="/time-summary"
+                  href="/time-summary/"
                   className={
                     active === "time-summary" ? activeLink : inactiveLink
                   }
@@ -91,14 +90,14 @@ export default async function MainLayout({
                   Time Summary{" "}
                 </Link>
                 <Link
-                  href="/holidays"
+                  href="/holidays/"
                   className={active === "holidays" ? activeLink : inactiveLink}
                 >
                   <CalendarX2 className="h-4 w-4" />
                   Holidays
                 </Link>
                 <Link
-                  href="/absenses"
+                  href="/absenses/"
                   className={active === "absenses" ? activeLink : inactiveLink}
                 >
                   <UserRoundX className="h-4 w-4" />
@@ -136,7 +135,7 @@ export default async function MainLayout({
                     Dashboard
                   </Link>
                   <Link
-                    href="/time-logs"
+                    href="/time-logs/"
                     className={
                       active === "time-logs" ? activeLink : inactiveLink
                     }
@@ -145,7 +144,7 @@ export default async function MainLayout({
                     Time Logs
                   </Link>
                   <Link
-                    href="/time-summary"
+                    href="/time-summary/"
                     className={
                       active === "time-summary" ? activeLink : inactiveLink
                     }
@@ -154,7 +153,7 @@ export default async function MainLayout({
                     Time Summary{" "}
                   </Link>
                   <Link
-                    href="/holidays"
+                    href="/holidays/"
                     className={
                       active === "holidays" ? activeLink : inactiveLink
                     }
@@ -163,7 +162,7 @@ export default async function MainLayout({
                     Holidays
                   </Link>
                   <Link
-                    href="/absenses"
+                    href="/absenses/"
                     className={
                       active === "absenses" ? activeLink : inactiveLink
                     }

@@ -37,7 +37,6 @@ async function getTimeLogs(): Promise<
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
