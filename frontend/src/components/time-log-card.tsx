@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { API_HOST } from "@/lib/constants";
 import { components } from "@/lib/schema";
 import { getCookie, getDuration } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -50,7 +49,7 @@ export default function TimeLogCard({
           onClick={async () => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return false;
-            const res = await fetch(`${API_HOST}/api/time-logs/end/`, {
+            const res = await fetch("/api/time-logs/end/", {
               method: "POST",
               credentials: "include",
               headers: {
@@ -78,7 +77,7 @@ export default function TimeLogCard({
           onClick={async () => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return null;
-            const res = await fetch(`${API_HOST}/api/time-logs/start/`, {
+            const res = await fetch(`/api/time-logs/start/`, {
               method: "POST",
               credentials: "include",
               headers: {

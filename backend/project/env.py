@@ -12,7 +12,6 @@ class Environment(BaseSettings):
     POSTGRES_PORT: int = 5432
     ALLOWED_HOSTS: str = "*"
     CSRF_TRUSTED_ORIGINS: str = "http://localhost:3000"
-    CORS_ALLOWED_ORIGINS: str = "http://localhost:3000"
     SECRET_KEY: str = "STRONG_KEY"
 
 

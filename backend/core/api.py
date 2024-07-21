@@ -88,7 +88,7 @@ def current_time_log(request: HttpRequest):
 )
 def start_time_log(request: HttpRequest, data: StartTimeLog):
     try:
-        if TimeLog.objects.filter(end=None).exists():
+        if TimeLog.objects.filter(user=request.user, end=None).exists():
             return 400, {"detail": "An active session already exists."}
         obj = TimeLog.objects.create(
             user=request.user,
