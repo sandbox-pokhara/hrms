@@ -30,7 +30,7 @@ async function getTimeLogs(
   if (!sessionid) redirect("/login/");
   try {
     const res = await fetch(
-      `${API_HOST}/api/time-logs/?limit=${limit}&offset=${page * limit}`,
+      `${API_HOST}/api/time-logs/?limit=${limit}&offset=${(page - 1) * limit}`,
       {
         headers: {
           Cookie: `sessionid=${sessionid.value}`,
@@ -41,6 +41,7 @@ async function getTimeLogs(
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -52,8 +53,8 @@ export default async function TimeLogs({
     page?: string;
   };
 }) {
-  const page = parseInt(searchParams?.page || "1", 0);
-  const timeLogs = await getTimeLogs(page - 1);
+  const page = parseInt(searchParams?.page || "1");
+  const timeLogs = await getTimeLogs(page);
 
   return (
     <MainLayout active="time-logs">
@@ -78,9 +79,11 @@ export default async function TimeLogs({
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.id}</TableCell>
                 <TableCell>{i.user__username}</TableCell>
-                <TableCell>{format(i.begin, "yyyy/MM/dd hh:mm aa")}</TableCell>
                 <TableCell>
-                  {i.end ? format(i.end, "yyyy/MM/dd hh:mm aa") : "-"}
+                  {format(new Date(i.begin), "yyyy/MM/dd hh:mm aa")}
+                </TableCell>
+                <TableCell>
+                  {i.end ? format(new Date(i.end), "yyyy/MM/dd hh:mm aa") : "-"}
                 </TableCell>
                 <TableCell>
                   {getDuration(
@@ -93,13 +96,21 @@ export default async function TimeLogs({
               </TableRow>
             ))}
           </TableBody>
-        ) : null}
+        ) : (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={7} className="text-center">
+                No time logs found.
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        )}
       </Table>
       <Pagination
         pageIndex={page}
         totalPages={
           timeLogs?.items.length !== 0
-            ? Math.ceil((timeLogs?.count || 0) / 10)
+            ? Math.ceil((timeLogs?.count || 1) / 10)
             : 0
         }
       />
