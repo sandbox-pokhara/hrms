@@ -19,14 +19,18 @@ export default function LoginForm() {
           setLoading(true);
           setError("");
           e.preventDefault();
+          await fetch("/api/csrf/", {
+            method: "POST",
+          });
           const csrftoken = getCookie("csrftoken");
-          if (!csrftoken) return false;
+          if (!csrftoken) {
+            setError("CSRF token error.");
+            setLoading(false);
+            return;
+          }
           const res = await fetch("/api/auth/login/", {
             method: "POST",
-            credentials: "include",
-            headers: {
-              "X-CSRFToken": csrftoken,
-            },
+            headers: { "X-CSRFToken": csrftoken },
             body: JSON.stringify({
               username,
               password,

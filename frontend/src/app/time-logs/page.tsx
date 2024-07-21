@@ -28,17 +28,18 @@ async function getTimeLogs(
   const cookieStore = cookies();
   const sessionid = cookieStore.get("sessionid");
   if (!sessionid) redirect("/login/");
-  const res = await fetch(
-    `${API_HOST}/api/time-logs/?limit=${limit}&offset=${page * limit}`,
-    {
+  try {
+    const res = await fetch(`${API_HOST}/api/time-logs/?limit=${limit}&offset-${page * limit}`, {
       headers: {
         Cookie: `sessionid=${sessionid.value}`,
       },
-    }
-  );
-  if (res.status === 401) redirect("/login/");
-  if (!res.ok) return null;
-  return await res.json();
+    });
+    if (res.status === 401) redirect("/login/");
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
 }
 
 export default async function TimeLogs({
@@ -60,6 +61,7 @@ export default async function TimeLogs({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead>User</TableHead>
             <TableHead>Start</TableHead>
             <TableHead>End</TableHead>
             <TableHead>Duration</TableHead>
@@ -72,6 +74,7 @@ export default async function TimeLogs({
             {timeLogs.items.map((i) => (
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.id}</TableCell>
+                <TableCell>{i.user__username}</TableCell>
                 <TableCell>{format(i.begin, "yyyy/MM/dd hh:mm aa")}</TableCell>
                 <TableCell>
                   {i.end ? format(i.end, "yyyy/MM/dd hh:mm aa") : "-"}
