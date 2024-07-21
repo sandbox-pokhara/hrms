@@ -13,8 +13,8 @@ import { getDuration } from "@/lib/utils";
 import { format } from "date-fns";
 import { cookies } from "next/headers";
 import { components } from "@/lib/schema";
-import { API_HOST } from "@/lib/constants";
 import { redirect } from "next/navigation";
+import { API_HOST } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Time Logs - Sandbox HRMS",

@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { API_HOST } from "@/lib/constants";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -16,31 +15,41 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={async (e) => {
-        setLoading(true);
-        setError("");
-        e.preventDefault();
-        const csrftoken = getCookie("csrftoken");
-        if (!csrftoken) return false;
-        const res = await fetch(`${API_HOST}/api/auth/login/`, {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrftoken,
-          },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-        });
-        if (res.ok) {
-          router.push("/");
-        } else if (res.status === 400) {
-          setError("Invalid credentails.");
-          setLoading(false);
-        } else {
-          {
-            setError("Unknown error.");
+        try {
+          setLoading(true);
+          setError("");
+          e.preventDefault();
+          await fetch("/api/csrf/", {
+            method: "POST",
+          });
+          const csrftoken = getCookie("csrftoken");
+          if (!csrftoken) {
+            setError("CSRF token error.");
             setLoading(false);
+            return;
           }
+          const res = await fetch("/api/auth/login/", {
+            method: "POST",
+            headers: { "X-CSRFToken": csrftoken },
+            body: JSON.stringify({
+              username,
+              password,
+            }),
+          });
+          if (res.ok) {
+            router.push("/");
+          } else if (res.status === 400) {
+            setError("Invalid credentails.");
+            setLoading(false);
+          } else {
+            {
+              setError("Unknown error.");
+              setLoading(false);
+            }
+          }
+        } catch (error) {
+          setError("Unknown error.");
+          setLoading(false);
         }
       }}
     >

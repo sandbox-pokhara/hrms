@@ -55,7 +55,7 @@ export default function TimeLogCard({
           onClick={async () => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return false;
-            const res = await fetch(`/api/time-logs/end/`, {
+            const res = await fetch("/api/time-logs/end/", {
               method: "POST",
               headers: {
                 "X-CSRFToken": csrftoken,

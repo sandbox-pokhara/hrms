@@ -15,14 +15,11 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_DB=hrms
       - POSTGRES_PASSWORD=postgres
-    ports:
-      - "8000:8000"
+      - ALLOWED_HOSTS=backend
     depends_on:
       db:
         condition: service_healthy
   frontend:
     image: ghcr.io/sandbox-pokhara/hrms-frontend
-    environment:
-      - API_HOST=http://backend:8000
     ports:
       - "3000:3000"

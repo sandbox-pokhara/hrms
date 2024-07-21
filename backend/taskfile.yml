@@ -8,3 +8,7 @@ tasks:
   publish:
     cmds:
       - docker image push ghcr.io/sandbox-pokhara/hrms-backend
+
+  deploy:
+    cmds:
+      - ssh sandbox-ovh -t "cd hrms && docker compose pull && docker compose up -d"

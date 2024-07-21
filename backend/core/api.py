@@ -3,7 +3,10 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.db import IntegrityError
 from django.http import HttpRequest
+from django.http import HttpResponse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from ninja import NinjaAPI
 from ninja.pagination import paginate  # type: ignore
 from ninja.security import django_auth
@@ -22,6 +25,13 @@ from core.schemas import TimeLogDTO
 from core.schemas import UserDTO
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
+
+
+@api.post("/csrf/")
+@ensure_csrf_cookie
+@csrf_exempt
+def get_csrf_token(request: HttpRequest):
+    return HttpResponse()
 
 
 @api.get("/projects/", response=list[ProjectDTO], auth=django_auth)
@@ -88,7 +98,7 @@ def current_time_log(request: HttpRequest):
 )
 def start_time_log(request: HttpRequest, data: StartTimeLog):
     try:
-        if TimeLog.objects.filter(end=None).exists():
+        if TimeLog.objects.filter(user=request.user, end=None).exists():
             return 400, {"detail": "An active session already exists."}
         obj = TimeLog.objects.create(
             user=request.user,

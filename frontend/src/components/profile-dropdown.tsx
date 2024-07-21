@@ -11,12 +11,11 @@ import { Button } from "@/components/ui/button";
 import { UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/lib/utils";
-import { API_HOST } from "@/lib/constants";
 
 async function logout() {
   const csrftoken = getCookie("csrftoken");
   if (!csrftoken) return false;
-  const res = await fetch(`${API_HOST}/api/auth/logout/`, {
+  const res = await fetch("/api/auth/logout/", {
     method: "POST",
     headers: {
       "X-CSRFToken": csrftoken,
