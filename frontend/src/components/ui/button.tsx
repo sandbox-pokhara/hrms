@@ -41,7 +41,9 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    // fix disabled not working when asChild=true
+    // https://github.com/shadcn-ui/ui/issues/1894#issuecomment-2222349645
+    const Comp = asChild && !props.disabled ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
