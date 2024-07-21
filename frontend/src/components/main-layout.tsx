@@ -43,7 +43,7 @@ async function getCurrentTimeLog() {
   }
 }
 
-async function fetchProjects() {
+async function getProjects() {
   const cookieStore = cookies();
   const sessionid = cookieStore.get("sessionid");
   if (!sessionid) redirect("/login/");
@@ -63,7 +63,7 @@ async function fetchProjects() {
   }
 }
 
-async function fetchActivities() {
+async function getActivities() {
   const cookieStore = cookies();
   const sessionid = cookieStore.get("sessionid");
   if (!sessionid) redirect("/login/");
@@ -92,8 +92,8 @@ export default async function MainLayout({
 }>) {
   const [currentTimeLog, projects, activities] = await Promise.all([
     getCurrentTimeLog(),
-    fetchProjects(),
-    fetchActivities(),
+    getProjects(),
+    getActivities(),
   ]);
 
   return (
