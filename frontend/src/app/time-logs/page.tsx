@@ -56,6 +56,7 @@ export default async function TimeLogs() {
             <TableHead>Duration</TableHead>
             <TableHead>Project</TableHead>
             <TableHead>Activity</TableHead>
+            <TableHead>User</TableHead>
           </TableRow>
         </TableHeader>
         {timeLogs ? (
@@ -75,6 +76,7 @@ export default async function TimeLogs() {
                 </TableCell>
                 <TableCell>{i.project__name}</TableCell>
                 <TableCell>{i.activity__name}</TableCell>
+                <TableCell>{i.username}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -350,6 +350,8 @@ export interface components {
             project__name: string;
             /** Activity  Name */
             activity__name: string;
+            /** Username */
+            username: string;
             /** ID */
             id?: number | null;
             /**
@@ -362,8 +364,6 @@ export interface components {
              * Format: date-time
              */
             date_modified: string;
-            /** User */
-            user: number;
             /**
              * Begin
              * Format: date-time
@@ -618,6 +618,15 @@ export interface operations {
         responses: {
             /** @description OK */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };

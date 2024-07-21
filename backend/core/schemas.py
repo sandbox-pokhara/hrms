@@ -17,10 +17,12 @@ class UserDTO(ModelSchema):
 class TimeLogDTO(ModelSchema):
     project__name: str = Field(..., alias="project.name")
     activity__name: str = Field(..., alias="activity.name")
+    username: str = Field(..., alias="user.username")
 
     class Meta:
         model = TimeLog
         fields = "__all__"
+        exclude = ["user"]
 
 
 class ProjectDTO(ModelSchema):
