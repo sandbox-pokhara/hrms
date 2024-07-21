@@ -12,6 +12,7 @@ import { components } from "@/lib/schema";
 import { getCookie, getDuration } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { StartSession } from "./start-sessin";
 
 export default function TimeLogCard({
   initial,
@@ -35,6 +36,7 @@ export default function TimeLogCard({
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
   return currentTimeLog ? (
     <Card x-chunk="dashboard-02-chunk-0">
       <CardHeader className="p-2 pt-0 md:p-4">
@@ -74,8 +76,8 @@ export default function TimeLogCard({
         <CardDescription>Start your time log session.</CardDescription>
       </CardHeader>
       <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-        <Button
-          onClick={async () => {
+        <StartSession
+          onSubmit={async (projectId, activityId) => {
             const csrftoken = getCookie("csrftoken");
             if (!csrftoken) return null;
             const res = await fetch(`${API_HOST}/api/time-logs/start/`, {
@@ -85,8 +87,8 @@ export default function TimeLogCard({
                 "X-CSRFToken": csrftoken,
               },
               body: JSON.stringify({
-                project: 1,
-                activity: 1,
+                project: projectId,
+                activity: activityId,
               }),
             });
             if (res.status === 401) router.push("/login/");
@@ -94,11 +96,7 @@ export default function TimeLogCard({
             const data = await res.json();
             if (data) setCurrentTimeLog(data);
           }}
-          size="sm"
-          className="w-full"
-        >
-          Start Session
-        </Button>
+        />
       </CardContent>
     </Card>
   );
