@@ -179,9 +179,10 @@ export default async function MainLayout({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
+                {/* Fix for "Warning: Missing Description or aria-describedby={undefined} for {DialogContent}." */}
                 <SheetHeader>
                   <SheetTitle></SheetTitle>
-                  <SheetDescription>Sandbox HRMS</SheetDescription>
+                  <SheetDescription></SheetDescription>
                 </SheetHeader>
                 <nav className="grid gap-2 text-lg font-medium">
                   <Link
