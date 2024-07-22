@@ -3,6 +3,7 @@ import {
   BarChartHorizontal,
   CalendarCheck2,
   CalendarX2,
+  ExternalLink,
   LineChart,
   Menu,
   Package2,
@@ -240,6 +241,11 @@ export default async function MainLayout({
                 </div>
               </form>
             </div>
+            <Button variant="ghost" className="p-3" asChild>
+              <Link href="/admin/">
+                <ExternalLink className="h-5 w-5 cursor-pointer" />
+              </Link>
+            </Button>
             <ProfileDropdown />
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
