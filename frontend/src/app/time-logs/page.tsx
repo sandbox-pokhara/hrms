@@ -81,16 +81,16 @@ export default async function TimeLogs({
                 <TableCell className="font-medium">{i.id}</TableCell>
                 <TableCell>{i.user__username}</TableCell>
                 <TableCell>
-                  <TimeLogStart start={i.begin} />
+                  <TimeLogStart start={i.start} />
                 </TableCell>
                 <TableCell>
                   <TimeLogEnd end={i.end} />
                 </TableCell>
                 <TableCell>
                   {i.end ? (
-                    getDuration(new Date(i.begin), new Date(i.end))
+                    getDuration(new Date(i.start), new Date(i.end))
                   ) : (
-                    <CountUp date={new Date(i.begin)} />
+                    <CountUp date={new Date(i.start)} />
                   )}
                 </TableCell>
                 <TableCell>{i.project__name}</TableCell>

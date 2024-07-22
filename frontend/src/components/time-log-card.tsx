@@ -33,7 +33,7 @@ export default function TimeLogCard({
     <Card x-chunk="dashboard-02-chunk-0">
       <CardHeader className="p-2 pt-0 md:p-4">
         <CardTitle>
-          <CountUp date={new Date(currentTimeLog.begin)} />
+          <CountUp date={new Date(currentTimeLog.start)} />
         </CardTitle>
         <CardDescription>
           {currentTimeLog.project__name}

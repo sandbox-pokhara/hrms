@@ -52,7 +52,7 @@ class ActivityAdmin(admin.ModelAdmin[Activity]):
 @admin.register(TimeLog)
 class TimeLogAdmin(admin.ModelAdmin[TimeLog]):
     search_fields = ["user__username", "project__name", "activity__name"]
-    list_display = ["id", "user", "begin", "end", "project", "activity"]
+    list_display = ["id", "user", "start", "end", "project", "activity"]
 
     class Meta:
         model = TimeLog

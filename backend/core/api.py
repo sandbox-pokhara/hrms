@@ -104,7 +104,7 @@ def start_time_log(request: HttpRequest, data: StartTimeLog):
             return 400, {"detail": "An active session already exists."}
         obj = TimeLog.objects.create(
             user=request.user,
-            begin=timezone.now(),
+            start=timezone.now(),
             end=None,
             project=Project.objects.get(id=data.project),
             activity=Activity.objects.get(id=data.activity),

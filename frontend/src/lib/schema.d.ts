@@ -401,10 +401,10 @@ export interface components {
             /** User */
             user: number;
             /**
-             * Begin
+             * Start
              * Format: date-time
              */
-            begin: string;
+            start: string;
             /** End */
             end?: string | null;
             /** Project */
