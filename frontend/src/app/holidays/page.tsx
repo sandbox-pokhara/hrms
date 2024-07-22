@@ -63,7 +63,6 @@ export default async function TimeLogs({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Date</TableHead>
           </TableRow>
@@ -72,8 +71,10 @@ export default async function TimeLogs({
           <TableBody>
             {holidays.items.map((i) => (
               <TableRow key={i.id}>
-                <TableCell>{i.name}</TableCell>
-                <TableCell>{format(i.date, "yyyy/MM/dd")}</TableCell>
+                <TableCell className="whitespace-nowrap">{i.name}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {format(i.date, "yyyy/MM/dd")}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
