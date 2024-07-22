@@ -26,6 +26,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { API_HOST } from "@/lib/constants";
 import { Toaster } from "@/components/ui/toaster";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const activeLink =
   "flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary";
@@ -179,10 +180,13 @@ export default async function MainLayout({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
-                {/* Fix for "Warning: Missing Description or aria-describedby={undefined} for {DialogContent}." */}
                 <SheetHeader>
-                  <SheetTitle></SheetTitle>
-                  <SheetDescription></SheetDescription>
+                  <SheetTitle>
+                    <VisuallyHidden.Root>Sandbox HRMS</VisuallyHidden.Root>
+                  </SheetTitle>
+                  <SheetDescription>
+                    <VisuallyHidden.Root>Sidebar menus</VisuallyHidden.Root>
+                  </SheetDescription>
                 </SheetHeader>
                 <nav className="grid gap-2 text-lg font-medium">
                   <Link
