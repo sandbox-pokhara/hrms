@@ -2,8 +2,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import AnonymousUser
 from django.db import IntegrityError
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -77,11 +75,6 @@ def create_user(request: HttpRequest, user: CreateUser):
 def change_password(request: HttpRequest, data: ChangePassword):
     user = request.user
 
-    if not isinstance(user, AbstractBaseUser) or isinstance(
-        user, AnonymousUser
-    ):
-        return 403, {"detail": "User is not authenticated."}
-
     if not user.is_authenticated:
         return 403, {"detail": "User is not authenticated."}
 
@@ -90,7 +83,7 @@ def change_password(request: HttpRequest, data: ChangePassword):
 
     user.set_password(data.new_password)
     user.save()
-    update_session_auth_hash(request, user)
+    update_session_auth_hash(request, user)  # type: ignore
     return GenericDTO(detail="Password changed successfully.")
 
 

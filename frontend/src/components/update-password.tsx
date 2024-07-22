@@ -31,9 +31,6 @@ export default function UpdatePasswordForm() {
       setLoading(true);
       setError("");
       e.preventDefault();
-      await fetch("/api/csrf/", {
-        method: "POST",
-      });
       const csrftoken = getCookie("csrftoken");
       if (!csrftoken) {
         setError("CSRF token error.");

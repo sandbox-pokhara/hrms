@@ -1,6 +1,10 @@
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from ninja import Field
 from ninja import ModelSchema
 from ninja import Schema
+from pydantic import Field
+from pydantic import field_validator
 
 from core.models import Activity
 from core.models import Holiday
@@ -64,4 +68,12 @@ class Login(Schema):
 
 class ChangePassword(Schema):
     current_password: str
-    new_password: str = Field(..., min_length=8)
+    new_password: str
+
+    @field_validator("new_password")
+    def validate_new_password(cls, value: str) -> str:
+        try:
+            validate_password(value)
+        except DjangoValidationError as e:
+            raise ValueError(e.messages)
+        return value
