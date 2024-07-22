@@ -3,6 +3,7 @@ from ninja import ModelSchema
 from ninja import Schema
 
 from core.models import Activity
+from core.models import Holiday
 from core.models import Project
 from core.models import TimeLog
 from core.models import User
@@ -33,6 +34,12 @@ class ProjectDTO(ModelSchema):
 class ActivityDTO(ModelSchema):
     class Meta:
         model = Activity
+        fields = "__all__"
+
+
+class HolidayDTO(ModelSchema):
+    class Meta:
+        model = Holiday
         fields = "__all__"
 
 

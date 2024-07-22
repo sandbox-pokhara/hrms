@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/api/csrf/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Get Csrf Token */
+        post: operations["core_api_get_csrf_token"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/projects/": {
         parameters: {
             query?: never;
@@ -168,6 +185,23 @@ export interface paths {
         put?: never;
         /** Auth Logout */
         post: operations["core_api_auth_logout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/holidays/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Holidays */
+        get: operations["core_api_list_holidays"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -392,6 +426,35 @@ export interface components {
             /** Password */
             password: string;
         };
+        /** HolidayDTO */
+        HolidayDTO: {
+            /** ID */
+            id?: number | null;
+            /**
+             * Date Created
+             * Format: date-time
+             */
+            date_created: string;
+            /**
+             * Date Modified
+             * Format: date-time
+             */
+            date_modified: string;
+            /** Name */
+            name: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+        };
+        /** PagedHolidayDTO */
+        PagedHolidayDTO: {
+            /** Items */
+            items: components["schemas"]["HolidayDTO"][];
+            /** Count */
+            count: number;
+        };
     };
     responses: never;
     parameters: never;
@@ -401,6 +464,24 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    core_api_get_csrf_token: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     core_api_list_projects: {
         parameters: {
             query?: {
@@ -654,6 +735,29 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_list_holidays: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PagedHolidayDTO"];
                 };
             };
         };
