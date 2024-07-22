@@ -60,3 +60,8 @@ class CreateUser(Schema):
 class Login(Schema):
     username: str
     password: str
+
+
+class ChangePassword(Schema):
+    current_password: str
+    new_password: str = Field(..., min_length=8)

@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AnonymousUser
 from django.db import IntegrityError
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -17,6 +20,7 @@ from core.models import Project
 from core.models import TimeLog
 from core.models import User
 from core.schemas import ActivityDTO
+from core.schemas import ChangePassword
 from core.schemas import CreateUser
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
@@ -65,6 +69,29 @@ def create_user(request: HttpRequest, user: CreateUser):
         return user_obj
     except IntegrityError:
         return 400, {"detail": "Username already exists."}
+
+
+@api.post(
+    "/users/change-password/", response={200: GenericDTO, 400: GenericDTO}
+)
+def change_password(request: HttpRequest, data: ChangePassword):
+    user = request.user
+
+    if not isinstance(user, AbstractBaseUser) or isinstance(
+        user, AnonymousUser
+    ):
+        return 403, {"detail": "User is not authenticated."}
+
+    if not user.is_authenticated:
+        return 403, {"detail": "User is not authenticated."}
+
+    if not user.check_password(data.current_password):
+        return 400, {"detail": "Current password is incorrect."}
+
+    user.set_password(data.new_password)
+    user.save()
+    update_session_auth_hash(request, user)
+    return GenericDTO(detail="Password changed successfully.")
 
 
 @api.get(
