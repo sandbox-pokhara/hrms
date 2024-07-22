@@ -43,12 +43,18 @@ class User(AbstractUser):
 class Project(BaseModel):
     name = models.CharField()
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Activity(BaseModel):
     name = models.CharField()
 
     class Meta:  # type: ignore
         verbose_name_plural = "Activities"
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class TimeLog(BaseModel):
