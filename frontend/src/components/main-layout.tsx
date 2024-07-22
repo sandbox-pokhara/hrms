@@ -12,7 +12,14 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import ProfileDropdown from "./profile-dropdown";
 import TimeLogCard from "./time-log-card";
 import { cookies } from "next/headers";
@@ -172,6 +179,10 @@ export default async function MainLayout({
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col">
+                <SheetHeader>
+                  <SheetTitle></SheetTitle>
+                  <SheetDescription>Sandbox HRMS</SheetDescription>
+                </SheetHeader>
                 <nav className="grid gap-2 text-lg font-medium">
                   <Link
                     href="/"
