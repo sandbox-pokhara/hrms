@@ -3,6 +3,7 @@ import {
   BarChartHorizontal,
   CalendarCheck2,
   CalendarX2,
+  ExternalLink,
   LineChart,
   Menu,
   Package2,
@@ -83,6 +84,26 @@ async function getActivities() {
   }
 }
 
+async function getCurrentUser() {
+  const cookieStore = cookies();
+  const sessionid = cookieStore.get("sessionid");
+  if (!sessionid) redirect("/login/");
+  try {
+    const res = await fetch(`${API_HOST}/api/users/current/`, {
+      method: "GET",
+      headers: {
+        Cookie: `sessionid=${sessionid.value}`,
+      },
+    });
+    if (!res.ok) {
+      return;
+    }
+    return await res.json();
+  } catch (err) {
+    return null;
+  }
+}
+
 export default async function MainLayout({
   active,
   children,
@@ -90,11 +111,9 @@ export default async function MainLayout({
   active: "dashboard" | "time-logs" | "time-summary" | "holidays" | "absenses";
   children: React.ReactNode;
 }>) {
-  const [currentTimeLog, projects, activities] = await Promise.all([
-    getCurrentTimeLog(),
-    getProjects(),
-    getActivities(),
-  ]);
+  const [currentTimeLog, projects, activities, currentUser] = await Promise.all(
+    [getCurrentTimeLog(), getProjects(), getActivities(), getCurrentUser()]
+  );
 
   return (
     <>
@@ -240,7 +259,16 @@ export default async function MainLayout({
                 </div>
               </form>
             </div>
-            <ProfileDropdown />
+            <div className="flex items-center gap-[2px]">
+              {currentUser?.is_superuser && (
+                <Button variant="ghost" className="p-3" asChild>
+                  <Link href="/admin/">
+                    <ExternalLink className="h-5 w-5 cursor-pointer" />
+                  </Link>
+                </Button>
+              )}
+              <ProfileDropdown />
+            </div>
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
             {children}
