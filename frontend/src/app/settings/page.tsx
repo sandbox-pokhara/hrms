@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Human Resource Management System",
 };
 
-export default function TimeLogs() {
+export default function Settings() {
   const cookieStore = cookies();
   const sessionid = cookieStore.get("sessionid");
   if (!sessionid) redirect("/login/");
