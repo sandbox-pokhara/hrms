@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/card";
 import type { Metadata } from "next";
 import LoginForm from "@/components/login-form";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Login - Sandbox HRMS",
@@ -14,6 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default function Login() {
+  const cookieStore = cookies();
+  const sessionid = cookieStore.get("sessionid");
+  if (sessionid) redirect("/");
+
   return (
     <div className="h-screen flex justify-center items-center">
       <Card>
