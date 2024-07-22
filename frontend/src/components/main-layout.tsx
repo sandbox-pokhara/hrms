@@ -89,7 +89,7 @@ async function getCurrentUser() {
   const sessionid = cookieStore.get("sessionid");
   if (!sessionid) redirect("/login/");
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/users/current/`, {
+    const res = await fetch(`${API_HOST}/api/users/current/`, {
       method: "GET",
       headers: {
         Cookie: `sessionid=${sessionid.value}`,
