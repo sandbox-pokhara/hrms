@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 async function getTimeLogs(
-  page: number = 0,
+  page: number = 1,
   limit: number = 10
 ): Promise<components["schemas"]["PagedTimeLogDTO"] | null> {
   const cookieStore = cookies();
@@ -57,7 +57,6 @@ export default async function TimeLogs({
 }) {
   const page = parseInt(searchParams?.page || "1");
   const timeLogs = await getTimeLogs(page);
-
   return (
     <MainLayout active="time-logs">
       <div className="flex items-center">

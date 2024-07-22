@@ -12,12 +12,14 @@ from ninja.pagination import paginate  # type: ignore
 from ninja.security import django_auth
 
 from core.models import Activity
+from core.models import Holiday
 from core.models import Project
 from core.models import TimeLog
 from core.models import User
 from core.schemas import ActivityDTO
 from core.schemas import CreateUser
 from core.schemas import GenericDTO
+from core.schemas import HolidayDTO
 from core.schemas import Login
 from core.schemas import ProjectDTO
 from core.schemas import StartTimeLog
@@ -141,3 +143,9 @@ def auth_login(request: HttpRequest, data: Login):
 def auth_logout(request: HttpRequest):
     logout(request)
     return {"detail": "Success."}
+
+
+@api.get("/holidays/", response=list[HolidayDTO], auth=django_auth)
+@paginate
+def list_holidays(request: HttpRequest):
+    return Holiday.objects.all().order_by("-id")
