@@ -145,3 +145,20 @@ export async function getRemaningAbsences(): Promise<
     return { value: 0 };
   }
 }
+
+export async function getTimeSummary(
+  start: string,
+  end: string
+): Promise<components["schemas"]["TimeLogSummaryDTO"][] | null> {
+  try {
+    const res = await serverFetch(
+      `/api/time-logs/summary/?start=${start}&end=${end}`
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    if (isRedirectError(err)) throw err;
+    console.log(err);
+    return null;
+  }
+}

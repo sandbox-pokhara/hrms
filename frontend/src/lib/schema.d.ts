@@ -174,6 +174,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/time-logs/summary/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Time Log Summary */
+        get: operations["core_api_time_log_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/absence-balances/": {
         parameters: {
             query?: never;
@@ -493,6 +510,29 @@ export interface components {
             project: number;
             /** Activity */
             activity: number;
+        };
+        /** TimeLogSummaryDTO */
+        TimeLogSummaryDTO: {
+            /** User */
+            user: string;
+            /** Summary */
+            summary: components["schemas"]["TimeLogSummaryPerDay"][];
+        };
+        /** TimeLogSummaryPerDay */
+        TimeLogSummaryPerDay: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Expected Hours */
+            expected_hours: number;
+            /** Hours Worked */
+            hours_worked: number;
+            /** Weekday */
+            weekday: string;
+            /** Holiday */
+            holiday: string;
         };
         /** AbsenceBalanceDTO */
         AbsenceBalanceDTO: {
@@ -844,6 +884,29 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_time_log_summary: {
+        parameters: {
+            query: {
+                start: string;
+                end: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TimeLogSummaryDTO"][];
                 };
             };
         };
