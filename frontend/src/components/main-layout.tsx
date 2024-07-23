@@ -43,7 +43,7 @@ export default async function MainLayout({
     | "time-logs"
     | "time-summary"
     | "holidays"
-    | "absenses"
+    | "absences"
     | "settings";
   currentUser: components["schemas"]["UserDTO"];
   children: React.ReactNode;
@@ -99,11 +99,11 @@ export default async function MainLayout({
                   Holidays
                 </Link>
                 <Link
-                  href="/absenses/"
-                  className={active === "absenses" ? activeLink : inactiveLink}
+                  href="/absences/"
+                  className={active === "absences" ? activeLink : inactiveLink}
                 >
                   <UserRoundX className="h-4 w-4" />
-                  Absenses
+                  Absences
                 </Link>
                 <Link
                   href="/settings/"
@@ -183,13 +183,13 @@ export default async function MainLayout({
                     Holidays
                   </Link>
                   <Link
-                    href="/absenses/"
+                    href="/absences/"
                     className={
-                      active === "absenses" ? activeLink : inactiveLink
+                      active === "absences" ? activeLink : inactiveLink
                     }
                   >
                     <UserRoundX className="h-4 w-4" />
-                    Absenses
+                    Absences
                   </Link>
                   <Link
                     href="/settings/"

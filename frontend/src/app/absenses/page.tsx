@@ -17,7 +17,7 @@ import {
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Absenses - Sandbox HRMS",
+  title: "Absences - Sandbox HRMS",
   description: "Human Resource Management System",
 };
 
@@ -33,9 +33,9 @@ export default async function TimeLogs({
   const absenceBalances = await getAbsenceBalances(page);
   const remainingAbsences = await getRemaningAbsences();
   return (
-    <MainLayout currentUser={currentUser} active="absenses">
+    <MainLayout currentUser={currentUser} active="absences">
       <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Absenses</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Absences</h1>
       </div>
       <div className="ml-auto">
         <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
@@ -79,7 +79,7 @@ export default async function TimeLogs({
             ? Math.ceil((absenceBalances?.count || 1) / 10)
             : 1
         }
-        path="/absenses/"
+        path="/absences/"
       />
       Reamining: {remainingAbsences.value}
     </MainLayout>
