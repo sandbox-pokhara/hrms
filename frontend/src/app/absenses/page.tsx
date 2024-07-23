@@ -1,5 +1,4 @@
 import MainLayout from "@/components/main-layout";
-import PageUnderConstruction from "@/components/page-under-construction";
 import Pagination from "@/components/pagination";
 import {
   Table,
@@ -47,9 +46,9 @@ export default async function TimeLogs({
             <TableHead>Created By</TableHead>
           </TableRow>
         </TableHeader>
-        {absenceBalances ? (
+        {absenceBalances?.items.length ? (
           <TableBody>
-            {absenceBalances.items.map((i) => (
+            {absenceBalances?.items.map((i) => (
               <TableRow key={i.id}>
                 <TableCell>{i.user__username}</TableCell>
                 <TableCell>{i.date}</TableCell>
@@ -74,8 +73,9 @@ export default async function TimeLogs({
         totalPages={
           absenceBalances?.items.length !== 0
             ? Math.ceil((absenceBalances?.count || 1) / 10)
-            : 0
+            : 1
         }
+        path="/absenses/"
       />
       Reamining: {remainingAbsences.value}
     </MainLayout>

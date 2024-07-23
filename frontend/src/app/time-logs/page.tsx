@@ -87,6 +87,7 @@ export default async function TimeLogs({
             ? Math.ceil((timeLogs?.count || 1) / 10)
             : 0
         }
+        path="/time-logs/"
       />
     </MainLayout>
   );

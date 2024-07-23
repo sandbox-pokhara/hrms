@@ -3,7 +3,6 @@ import {
   BarChartHorizontal,
   CalendarCheck2,
   CalendarX2,
-  ExternalLink,
   LineChart,
   Menu,
   Package2,
