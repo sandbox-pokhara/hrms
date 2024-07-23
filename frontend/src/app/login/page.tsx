@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Human Resource Management System",
 };
 
-export default function Login() {
+export default async function Login() {
   return (
     <div className="h-screen flex justify-center items-center">
       <Card>

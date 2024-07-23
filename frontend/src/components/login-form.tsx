@@ -75,7 +75,12 @@ export default function LoginForm() {
         {error ? (
           <p className="text-[0.8rem] font-medium text-destructive">{error}</p>
         ) : null}
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={loading}
+          loading={loading}
+        >
           Login
         </Button>
       </div>

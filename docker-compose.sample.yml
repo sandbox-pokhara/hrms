@@ -12,10 +12,16 @@ services:
   backend:
     image: ghcr.io/sandbox-pokhara/hrms-backend
     environment:
+      - DEBUG=True
       - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
       - POSTGRES_DB=hrms
       - POSTGRES_PASSWORD=postgres
-      - ALLOWED_HOSTS=backend
+      - POSTGRES_PORT=5432
+      - ALLOWED_HOSTS=localhost,backend
+      - CSRF_TRUSTED_ORIGINS=http://localhost:3000,http://backend:8000
+      - SECRET_KEY=STRONG_KEY
+      - TIME_ZONE=UTC
     depends_on:
       db:
         condition: service_healthy
@@ -23,3 +29,6 @@ services:
     image: ghcr.io/sandbox-pokhara/hrms-frontend
     ports:
       - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy

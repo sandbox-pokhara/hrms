@@ -1,21 +1,22 @@
 import MainLayout from "@/components/main-layout";
-import PageUnderConstruction from "@/components/page-under-construction";
+import UpdatePasswordForm from "@/components/update-password";
 import { getCurrentUser } from "@/lib/apiServer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Absenses - Sandbox HRMS",
+  title: "Settings - Sandbox HRMS",
   description: "Human Resource Management System",
 };
 
-export default async function TimeLogs() {
+export default async function Settings() {
   const currentUser = await getCurrentUser();
+
   return (
-    <MainLayout currentUser={currentUser} active="absenses">
+    <MainLayout currentUser={currentUser} active="settings">
       <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Absenses</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Settings</h1>
       </div>
-      <PageUnderConstruction />
+      <UpdatePasswordForm currentUser={currentUser} />
     </MainLayout>
   );
 }

@@ -1,6 +1,7 @@
 from ninja import Field
 from ninja import ModelSchema
 from ninja import Schema
+from pydantic import Field
 
 from core.models import Activity
 from core.models import Holiday
@@ -60,3 +61,8 @@ class CreateUser(Schema):
 class Login(Schema):
     username: str
     password: str
+
+
+class ChangePassword(Schema):
+    current_password: str
+    new_password: str

@@ -43,6 +43,9 @@ class User(AbstractUser):
 class Project(BaseModel):
     name = models.CharField()
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Activity(BaseModel):
     name = models.CharField()
@@ -50,12 +53,15 @@ class Activity(BaseModel):
     class Meta:  # type: ignore
         verbose_name_plural = "Activities"
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class TimeLog(BaseModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="time_logs"
     )
-    begin = models.DateTimeField()
+    start = models.DateTimeField()
     end = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey(
         Project, on_delete=models.PROTECT, related_name="time_logs"

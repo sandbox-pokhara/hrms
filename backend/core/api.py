@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -17,6 +20,7 @@ from core.models import Project
 from core.models import TimeLog
 from core.models import User
 from core.schemas import ActivityDTO
+from core.schemas import ChangePassword
 from core.schemas import CreateUser
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
@@ -27,6 +31,24 @@ from core.schemas import TimeLogDTO
 from core.schemas import UserDTO
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
+
+
+@api.exception_handler(ValidationError)
+def django_validation_error(request: HttpRequest, exc: ValidationError):
+    return api.create_response(
+        request,
+        {
+            "detail": [
+                {
+                    "type": "validation_error",
+                    "loc": [],  # impossible to find out
+                    "msg": e,
+                }
+                for e in exc.messages
+            ]
+        },
+        status=422,
+    )
 
 
 @api.post("/csrf/")
@@ -67,6 +89,22 @@ def create_user(request: HttpRequest, user: CreateUser):
         return 400, {"detail": "Username already exists."}
 
 
+@api.post(
+    "/users/change-password/",
+    auth=django_auth,
+    response={200: GenericDTO, 400: GenericDTO},
+)
+def change_password(request: HttpRequest, data: ChangePassword):
+    user = request.user
+    if not user.check_password(data.current_password):
+        return 400, {"detail": "Current password is incorrect."}
+    validate_password(data.new_password)
+    user.set_password(data.new_password)
+    user.save()
+    update_session_auth_hash(request, user)  # type: ignore
+    return GenericDTO(detail="Password changed successfully.")
+
+
 @api.get(
     "/time-logs/",
     auth=django_auth,
@@ -104,7 +142,7 @@ def start_time_log(request: HttpRequest, data: StartTimeLog):
             return 400, {"detail": "An active session already exists."}
         obj = TimeLog.objects.create(
             user=request.user,
-            begin=timezone.now(),
+            start=timezone.now(),
             end=None,
             project=Project.objects.get(id=data.project),
             activity=Activity.objects.get(id=data.activity),

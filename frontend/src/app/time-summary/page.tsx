@@ -1,5 +1,6 @@
 import MainLayout from "@/components/main-layout";
 import PageUnderConstruction from "@/components/page-under-construction";
+import { getCurrentUser } from "@/lib/apiServer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,9 +8,11 @@ export const metadata: Metadata = {
   description: "Human Resource Management System",
 };
 
-export default function TimeLogs() {
+export default async function TimeLogs() {
+  const currentUser = await getCurrentUser();
+
   return (
-    <MainLayout active="time-summary">
+    <MainLayout currentUser={currentUser} active="time-summary">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Time Summary</h1>
       </div>
