@@ -33,3 +33,13 @@ export function getDuration(start: Date, end: Date) {
   text += (duration.seconds || 0) + "s";
   return text;
 }
+
+export function convertHoursToHHMM(hours: number): string {
+  const wholeHours = Math.floor(hours);
+  const minutes = Math.round((hours - wholeHours) * 60);
+
+  const formattedHours = wholeHours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes}`;
+}
