@@ -1,6 +1,6 @@
 import MainLayout from "@/components/main-layout";
-import PageUnderConstruction from "@/components/page-under-construction";
 import Pagination from "@/components/pagination";
+import { SubmitAbsence } from "@/components/submit-absence";
 import {
   Table,
   TableBody,
@@ -37,6 +37,9 @@ export default async function TimeLogs({
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Absenses</h1>
       </div>
+      <div className="ml-auto">
+        <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -63,7 +66,7 @@ export default async function TimeLogs({
           <TableBody>
             <TableRow>
               <TableCell colSpan={7} className="text-center">
-                No time logs found.
+                No absences found.
               </TableCell>
             </TableRow>
           </TableBody>
