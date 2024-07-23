@@ -66,8 +66,9 @@ export default async function TimeLogs({
         totalPages={
           holidays?.items.length !== 0
             ? Math.ceil((holidays?.count || 1) / 10)
-            : 0
+            : 1
         }
+        path="/holidays/"
       />
     </MainLayout>
   );

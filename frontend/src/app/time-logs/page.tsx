@@ -85,7 +85,7 @@ export default async function TimeLogs({
         totalPages={
           timeLogs?.items.length !== 0
             ? Math.ceil((timeLogs?.count || 1) / 10)
-            : 0
+            : 1
         }
         path="/time-logs/"
       />
