@@ -48,12 +48,19 @@ export default function ProfileDropdown({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{currentUser.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link href="/settings/">Settings</Link>
+        </DropdownMenuItem>
         {currentUser?.is_superuser && (
-          <DropdownMenuItem onClick={() => router.push("/admin/")}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => router.push("/admin/")}
+          >
             Admin
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
+          className="cursor-pointer"
           onClick={async () => {
             if (await logout()) router.push("/login/");
           }}
