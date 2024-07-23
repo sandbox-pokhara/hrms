@@ -45,7 +45,7 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
     try {
       const csrftoken = getCookie("csrftoken");
       if (!csrftoken) return null;
-      const res = await fetch(`http://localhost:8000/api/time-logs/start/`, {
+      const res = await fetch(`/api/time-logs/start/`, {
         method: "POST",
         headers: {
           "X-CSRFToken": csrftoken,
@@ -75,7 +75,7 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
           className="w-full"
           disabled={!Boolean(remainigAbsences)}
         >
-          Submit Absences
+          Submit Absence
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
