@@ -56,11 +56,17 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
                 <SelectValue placeholder="Select Project" />
               </SelectTrigger>
               <SelectContent>
-                {projects?.items.map((project, i) => (
-                  <SelectItem value={String(project.id)} key={i}>
-                    {project.name}
+                {projects?.items?.length ? (
+                  projects?.items.map((project, i) => (
+                    <SelectItem value={String(project.id)} key={i}>
+                      {project.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="empty" disabled={true}>
+                    No Projects Found
                   </SelectItem>
-                ))}
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -73,11 +79,17 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
                 <SelectValue placeholder="Select Activity" />
               </SelectTrigger>
               <SelectContent>
-                {activities?.items.map((activity, i) => (
-                  <SelectItem value={String(activity.id)} key={i}>
-                    {activity.name}
+                {activities?.items?.length ? (
+                  activities?.items.map((activity, i) => (
+                    <SelectItem value={String(activity.id)} key={i}>
+                      {activity.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="empty" disabled={true}>
+                    No Activities Found
                   </SelectItem>
-                ))}
+                )}
               </SelectContent>
             </Select>
           </div>

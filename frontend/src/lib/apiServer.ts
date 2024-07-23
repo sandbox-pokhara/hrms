@@ -43,7 +43,7 @@ export async function getProjects(): Promise<
   components["schemas"]["PagedProjectDTO"]
 > {
   try {
-    const res = await serverFetch("/api/time-logs/current/");
+    const res = await serverFetch("/api/projects/");
     if (!res.ok) return { count: 0, items: [] };
     return await res.json();
   } catch (err) {
