@@ -131,6 +131,8 @@ export default async function TimeSummary({
                       const dayData = userSummary.summary.find(
                         (item) => item.date === format(date, "yyyy-MM-dd")
                       );
+                      console.log(dayData);
+
                       return (
                         <TableCell
                           key={date.toISOString()}
@@ -151,12 +153,12 @@ export default async function TimeSummary({
                           })}
                         >
                           {showDifference &&
-                            !dayData?.weekday &&
+                            dayData?.weekday !== "sat" &&
                             (dayData?.hours_worked || 0) -
                               (dayData?.expected_hours || 0) >=
                               0 &&
                             "+"}
-                          {dayData?.holiday
+                          {dayData?.holiday || dayData?.weekday === "sat"
                             ? ""
                             : showDifference
                             ? convertHoursToHHMM(
