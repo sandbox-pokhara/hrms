@@ -30,7 +30,7 @@ export default async function TimeSummary({
   searchParams?: {
     start?: string;
     end?: string;
-    toggle?: boolean;
+    "show-difference"?: string;
   };
 }) {
   const today = new Date();
@@ -40,7 +40,7 @@ export default async function TimeSummary({
   const end = searchParams?.end
     ? new Date(searchParams.end)
     : endOfWeek(today, { weekStartsOn: 0 });
-  const toggle = searchParams?.toggle || false;
+  const showDifference = searchParams?.["show-difference"] === "true";
 
   const formattedStart = format(start, "yyyy-MM-dd");
   const formattedEnd = format(end, "yyyy-MM-dd");
@@ -68,13 +68,9 @@ export default async function TimeSummary({
     <MainLayout currentUser={currentUser} active="time-summary">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-semibold md:text-2xl">Time Summary</h1>
-        <Button variant="outline" asChild>
+        <Button variant={showDifference ? "secondary" : "outline"} asChild>
           <Link
-            href={
-              toggle
-                ? "/time-summary/?toggle=false"
-                : "/time-summary/?toggle=true"
-            }
+            href={`/time-summary/?start=${formattedStart}&end=${formattedEnd}&show-difference=${!showDifference}`}
           >
             Show Difference
           </Link>
@@ -115,18 +111,18 @@ export default async function TimeSummary({
                     <TableCell
                       className={cn(
                         "font-medium",
-                        toggle
+                        showDifference
                           ? userTotalHoursWorked - userExpectedHours >= 0
                             ? "text-green-600"
                             : "text-red-600"
                           : "text-blue-600"
                       )}
                     >
-                      {toggle &&
+                      {showDifference &&
                         userTotalHoursWorked - userExpectedHours >= 0 &&
                         "+"}
                       {convertHoursToHHMM(
-                        toggle
+                        showDifference
                           ? userTotalHoursWorked - userExpectedHours
                           : userTotalHoursWorked
                       )}
@@ -143,18 +139,18 @@ export default async function TimeSummary({
                               dayData?.weekday === "sat" ||
                               dayData?.holiday.length,
                             "text-green-600":
-                              toggle &&
+                              showDifference &&
                               (dayData?.hours_worked || 0) -
                                 (dayData?.expected_hours || 0) >=
                                 0,
                             "text-red-600":
-                              toggle &&
+                              showDifference &&
                               (dayData?.hours_worked || 0) -
                                 (dayData?.expected_hours || 0) <
                                 0,
                           })}
                         >
-                          {toggle &&
+                          {showDifference &&
                             !dayData?.weekday &&
                             (dayData?.hours_worked || 0) -
                               (dayData?.expected_hours || 0) >=
@@ -162,7 +158,7 @@ export default async function TimeSummary({
                             "+"}
                           {dayData?.holiday
                             ? ""
-                            : toggle
+                            : showDifference
                             ? convertHoursToHHMM(
                                 (dayData?.hours_worked || 0) -
                                   (dayData?.expected_hours || 0)
