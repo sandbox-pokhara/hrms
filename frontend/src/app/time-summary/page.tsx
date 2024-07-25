@@ -140,9 +140,9 @@ export default async function TimeSummary({
                         (dayData?.expected_hours || 0);
                       const sign =
                         showDifference && !dayData?.holiday
-                          ? difference >= 0
-                            ? "+"
-                            : "-"
+                          ? new Intl.NumberFormat("en-US", {
+                              signDisplay: "exceptZero",
+                            }).format(difference)[0]
                           : null;
 
                       return (
