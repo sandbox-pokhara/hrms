@@ -39,7 +39,7 @@ export default async function MainLayout({
           activities={activities}
           currentTimeLog={currentTimeLog}
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-auto">
           <Header
             active={active}
             currentUser={currentUser}
