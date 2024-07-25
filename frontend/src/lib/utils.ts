@@ -30,7 +30,6 @@ export function getDuration(start: Date, end: Date) {
   let text = "";
   if (duration.hours) text += duration.hours + "h";
   if (duration.minutes) text += duration.minutes + "m";
-  text += (duration.seconds || 0) + "s";
   return text;
 }
 
