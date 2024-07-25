@@ -17,10 +17,7 @@ export default function CountUp({
     const interval = setInterval(() => {
       setNow(new Date());
 
-      document.title = `${getDuration(
-        new Date("2024-07-25T12:33:37.614Z"),
-        new Date()
-      )} | ${title
+      document.title = `${getDuration(new Date(date), new Date())} | ${title
         .split("-")
         .join(" ")
         .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
