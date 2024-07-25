@@ -76,123 +76,139 @@ export default async function TimeSummary({
           </Link>
         </Button>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Total</TableHead>
-            {dateRange.map((date) => (
-              <TableHead key={date.toISOString()}>
-                {format(date, "EEE dd")}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {timeSummary?.length ? (
-            <>
-              {timeSummary.map((userSummary) => {
-                const userTotalHoursWorked = userSummary.summary.reduce(
-                  (acc, item) => item.hours_worked + acc,
-                  0
-                );
-                const userExpectedHours = userSummary.summary.reduce(
-                  (acc, item) => {
-                    if (new Date(item.date) > new Date() || item.holiday.length)
-                      return acc;
-                    return item.expected_hours + acc;
-                  },
-                  0
-                );
-                const totalDifference =
-                  userTotalHoursWorked - userExpectedHours;
+      <div className="w-full overflow-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>User</TableHead>
+              <TableHead>Total</TableHead>
+              {dateRange.map((date) => (
+                <TableHead
+                  key={date.toISOString()}
+                  className="whitespace-nowrap"
+                >
+                  {format(date, "EEE dd")}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {timeSummary?.length ? (
+              <>
+                {timeSummary.map((userSummary) => {
+                  const userTotalHoursWorked = userSummary.summary.reduce(
+                    (acc, item) => item.hours_worked + acc,
+                    0
+                  );
+                  const userExpectedHours = userSummary.summary.reduce(
+                    (acc, item) => {
+                      if (
+                        new Date(item.date) > new Date() ||
+                        item.holiday.length
+                      )
+                        return acc;
+                      return item.expected_hours + acc;
+                    },
+                    0
+                  );
+                  const totalDifference =
+                    userTotalHoursWorked - userExpectedHours;
 
-                return (
-                  <TableRow key={userSummary.user}>
-                    <TableCell>{userSummary.user}</TableCell>
-                    <TableCell
-                      className={cn(
-                        "font-medium",
-                        showDifference
-                          ? totalDifference >= 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                          : "text-blue-600"
-                      )}
-                    >
-                      {showDifference
-                        ? totalDifference >= 0
-                          ? "+"
-                          : "-"
-                        : null}
-                      {convertHoursToHHMM(
-                        showDifference
-                          ? Math.abs(totalDifference)
-                          : userTotalHoursWorked
-                      )}
-                    </TableCell>
-                    {dateRange.map((date) => {
-                      const dayData = userSummary.summary.find(
-                        (item) => item.date === format(date, "yyyy-MM-dd")
-                      );
-                      const difference =
-                        (dayData?.hours_worked || 0) -
-                        (dayData?.expected_hours || 0);
-                      const sign =
-                        showDifference && !dayData?.holiday
-                          ? new Intl.NumberFormat("en-US", {
-                              signDisplay: "exceptZero",
-                            }).format(difference)[0]
-                          : null;
-
-                      return (
-                        <TableCell
-                          key={date.toISOString()}
-                          className={cn({
-                            "bg-muted": dayData?.holiday.length,
-                            "text-green-600": showDifference && difference >= 0,
-                            "text-red-600": showDifference && difference < 0,
-                          })}
-                        >
-                          {sign}
-                          {dayData?.holiday
-                            ? ""
-                            : showDifference
-                            ? convertHoursToHHMM(Math.abs(difference))
-                            : dayData?.hours_worked
-                            ? convertHoursToHHMM(dayData?.hours_worked)
-                            : ""}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-              <TableRow className="bg-muted font-medium">
-                <TableCell>Total Working Hours</TableCell>
-                <TableCell>
-                  {convertHoursToHHMM(totalWorkingHours?.total || 0)}
-                </TableCell>
-                {dateRange.map((date) => {
-                  const totalHours =
-                    totalWorkingHours?.[format(date, "yyyy-MM-dd")] || 0;
                   return (
-                    <TableCell key={date.toISOString()}>
-                      {convertHoursToHHMM(totalHours)}
-                    </TableCell>
+                    <TableRow key={userSummary.user}>
+                      <TableCell className="w-[200px] whitespace-nowrap">
+                        {userSummary.user}
+                      </TableCell>
+                      <TableCell
+                        className={cn(
+                          "font-medium w-[120px] whitespace-nowrap",
+                          showDifference
+                            ? totalDifference >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                            : "text-blue-600"
+                        )}
+                      >
+                        {showDifference
+                          ? totalDifference >= 0
+                            ? "+"
+                            : "-"
+                          : null}
+                        {convertHoursToHHMM(
+                          showDifference
+                            ? Math.abs(totalDifference)
+                            : userTotalHoursWorked
+                        )}
+                      </TableCell>
+                      {dateRange.map((date) => {
+                        const dayData = userSummary.summary.find(
+                          (item) => item.date === format(date, "yyyy-MM-dd")
+                        );
+                        const difference =
+                          (dayData?.hours_worked || 0) -
+                          (dayData?.expected_hours || 0);
+                        const sign =
+                          showDifference && !dayData?.holiday
+                            ? new Intl.NumberFormat("en-US", {
+                                signDisplay: "exceptZero",
+                              }).format(difference)[0]
+                            : null;
+
+                        return (
+                          <TableCell
+                            key={date.toISOString()}
+                            className={cn("w-[100px] whitespace-nowrap", {
+                              "bg-muted": dayData?.holiday.length,
+                              "text-green-600":
+                                showDifference && difference >= 0,
+                              "text-red-600": showDifference && difference < 0,
+                            })}
+                          >
+                            {sign}
+                            {dayData?.holiday
+                              ? ""
+                              : showDifference
+                              ? convertHoursToHHMM(Math.abs(difference))
+                              : dayData?.hours_worked
+                              ? convertHoursToHHMM(dayData?.hours_worked)
+                              : ""}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
                   );
                 })}
+                <TableRow className="bg-muted font-medium">
+                  <TableCell className="whitespace-nowrap">
+                    Total Working Hours
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {convertHoursToHHMM(totalWorkingHours?.total || 0)}
+                  </TableCell>
+                  {dateRange.map((date) => {
+                    const totalHours =
+                      totalWorkingHours?.[format(date, "yyyy-MM-dd")] || 0;
+                    return (
+                      <TableCell
+                        key={date.toISOString()}
+                        className="whitespace-nowrap"
+                      >
+                        {convertHoursToHHMM(totalHours)}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              </>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center">
+                  No time summary data found.
+                </TableCell>
               </TableRow>
-            </>
-          ) : (
-            <TableRow>
-              <TableCell colSpan={9} className="text-center">
-                No time summary data found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </MainLayout>
   );
 }
