@@ -100,3 +100,11 @@ class TimeLogSummaryPerDay(Schema):
 class TimeLogSummaryDTO(Schema):
     user: str
     summary: list[TimeLogSummaryPerDay]
+
+
+class CreateProject(Schema):
+    project: str
+
+
+class CreateActivity(Schema):
+    activity: str

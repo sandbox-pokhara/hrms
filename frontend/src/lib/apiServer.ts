@@ -39,11 +39,14 @@ export async function getCurrentTimeLog(): Promise<
   }
 }
 
-export async function getProjects(): Promise<
-  components["schemas"]["PagedProjectDTO"]
-> {
+export async function getProjects(
+  page: number = 1,
+  limit: number = 10
+): Promise<components["schemas"]["PagedProjectDTO"]> {
   try {
-    const res = await serverFetch("/api/projects/");
+    const res = await serverFetch(
+      `/api/projects/?limit=${limit}&offset=${(page - 1) * limit}`
+    );
     if (!res.ok) return { count: 0, items: [] };
     return await res.json();
   } catch (err) {
@@ -53,11 +56,14 @@ export async function getProjects(): Promise<
   }
 }
 
-export async function getActivities(): Promise<
-  components["schemas"]["PagedActivityDTO"]
-> {
+export async function getActivities(
+  page: number = 1,
+  limit: number = 10
+): Promise<components["schemas"]["PagedActivityDTO"]> {
   try {
-    const res = await serverFetch("/api/activities/");
+    const res = await serverFetch(
+      `/api/activities/?limit=${limit}&offset=${(page - 1) * limit}`
+    );
     if (!res.ok) return { count: 0, items: [] };
     return await res.json();
   } catch (err) {
@@ -72,6 +78,23 @@ export async function getCurrentUser(): Promise<
 > {
   try {
     const res = await serverFetch("/api/users/current/");
+    if (!res.ok) redirect("/login/");
+    return await res.json();
+  } catch (err) {
+    if (isRedirectError(err)) throw err;
+    console.log(err);
+    redirect("/login/");
+  }
+}
+
+export async function getUsersList(
+  page: number = 1,
+  limit: number = 10
+): Promise<components["schemas"]["PagedUserDTO"]> {
+  try {
+    const res = await serverFetch(
+      `/api/users/?limit=${limit}&offset=${(page - 1) * limit}`
+    );
     if (!res.ok) redirect("/login/");
     return await res.json();
   } catch (err) {
