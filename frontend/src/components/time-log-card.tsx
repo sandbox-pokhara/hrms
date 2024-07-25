@@ -18,13 +18,20 @@ export default function TimeLogCard({
   initial,
   projects,
   activities,
+  activeTitle,
 }: {
   initial: components["schemas"]["TimeLogDTO"] | null;
   projects: components["schemas"]["PagedProjectDTO"];
   activities: components["schemas"]["PagedActivityDTO"];
+  activeTitle:
+    | "dashboard"
+    | "time-logs"
+    | "time-summary"
+    | "holidays"
+    | "absences"
+    | "settings";
 }) {
   const router = useRouter();
-
   const [currentTimeLog, setCurrentTimeLog] = useState<
     components["schemas"]["TimeLogDTO"] | null
   >(initial);
@@ -33,7 +40,7 @@ export default function TimeLogCard({
     <Card x-chunk="dashboard-02-chunk-0">
       <CardHeader className="p-2 pt-0 md:p-4">
         <CardTitle>
-          <CountUp date={new Date(currentTimeLog.start)} />
+          <CountUp date={new Date(currentTimeLog.start)} title={activeTitle} />
         </CardTitle>
         <CardDescription>
           {currentTimeLog.project__name}

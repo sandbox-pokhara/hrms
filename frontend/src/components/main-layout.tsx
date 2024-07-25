@@ -119,6 +119,7 @@ export default async function MainLayout({
                 initial={currentTimeLog}
                 projects={projects}
                 activities={activities}
+                activeTitle={active}
               />
             </div>
           </div>
@@ -206,6 +207,7 @@ export default async function MainLayout({
                     initial={currentTimeLog}
                     projects={projects}
                     activities={activities}
+                    activeTitle={active}
                   />
                 </div>
               </SheetContent>
