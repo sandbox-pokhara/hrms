@@ -23,7 +23,7 @@ export default function CountUp({
         .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
           letter.toUpperCase()
         )} - Sandbox HRMS`;
-    }, 10000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 

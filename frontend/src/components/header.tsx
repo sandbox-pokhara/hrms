@@ -150,6 +150,7 @@ export default function Header({
               initial={currentTimeLog}
               projects={projects}
               activities={activities}
+              activeTitle={active}
             />
           </div>
         </SheetContent>
