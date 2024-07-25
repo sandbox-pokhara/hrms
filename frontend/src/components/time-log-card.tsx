@@ -29,6 +29,9 @@ export default function TimeLogCard({
     | "time-summary"
     | "holidays"
     | "absences"
+    | "users"
+    | "activities"
+    | "projects"
     | "settings";
 }) {
   const router = useRouter();

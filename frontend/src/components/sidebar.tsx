@@ -130,6 +130,7 @@ export default function Sidebar({
             initial={currentTimeLog}
             projects={projects}
             activities={activities}
+            activeTitle={active}
           />
         </div>
       </div>

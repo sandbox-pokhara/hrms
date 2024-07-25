@@ -38,7 +38,6 @@ export default async function MainLayout({
           projects={projects}
           activities={activities}
           currentTimeLog={currentTimeLog}
-          activeTitle={active}
         />
         <div className="flex flex-col">
           <Header
