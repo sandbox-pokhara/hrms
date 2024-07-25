@@ -26,10 +26,10 @@ interface Props {
 export function SubmitAbsence({ remainigAbsences }: Props) {
   const router = useRouter();
   const [date, setDate] = useState<Date | undefined>();
-  const [description, setDescription] = useState<string>("");
+  const [reason, setReason] = useState<string>("");
 
   const submitAbsence = async () => {
-    if (!date && !description) {
+    if (!date && !reason) {
       toast({
         title: "Please fill all the fields.",
       });
@@ -45,14 +45,14 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
     try {
       const csrftoken = getCookie("csrftoken");
       if (!csrftoken) return null;
-      const res = await fetch(`/api/time-logs/start/`, {
+      const res = await fetch(`/api/absence-balances/submit/`, {
         method: "POST",
         headers: {
           "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
           date: date,
-          description: description,
+          description: reason,
         }),
       });
       if (res.status === 401) router.push("/login/");
@@ -89,11 +89,12 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
               htmlFor="description"
               className="text-left max-w-[70px] w-full"
             >
-              Description
+              Reason
             </Label>
             <Input
               id="description"
-              onChange={(e) => setDescription(e.target.value)}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
             />
           </div>
           <div className="flex flex-col items-start gap-2">

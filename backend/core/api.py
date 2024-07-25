@@ -27,6 +27,8 @@ from core.models import User
 from core.schemas import AbsenceBalanceDTO
 from core.schemas import ActivityDTO
 from core.schemas import ChangePassword
+from core.schemas import CreateActivity
+from core.schemas import CreateProject
 from core.schemas import CreateUser
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
@@ -74,10 +76,28 @@ def list_projects(request: HttpRequest):
     return Project.objects.all().order_by("-id")
 
 
+@api.post("/projects/", response=GenericDTO, auth=django_auth)
+def create_project(request: HttpRequest, project: CreateProject):
+    try:
+        Project.objects.create(name=project.project)
+        return 200, {"detail": "Project created successfully."}
+    except Exception:
+        return 400, {"detail": "Something went wrong."}
+
+
 @api.get("/activities/", response=list[ActivityDTO], auth=django_auth)
 @paginate
 def list_activities(request: HttpRequest):
     return Activity.objects.all().order_by("-id")
+
+
+@api.post("/activities/", response=GenericDTO, auth=django_auth)
+def create_activity(request: HttpRequest, activity: CreateActivity):
+    try:
+        Activity.objects.create(name=activity.activity)
+        return 200, {"detail": "Activity created successfully."}
+    except Exception:
+        return 400, {"detail": "Something went wrong."}
 
 
 @api.get("/users/current/", response=UserDTO, auth=django_auth)
@@ -85,7 +105,9 @@ def current_user(request: HttpRequest):
     return request.user
 
 
-@api.post("/users/", response={200: UserDTO, 400: GenericDTO})
+@api.post(
+    "/users/", response={200: UserDTO, 400: GenericDTO}, auth=django_auth
+)
 def create_user(request: HttpRequest, user: CreateUser):
     try:
         user_obj = User.objects.create_user(
@@ -97,6 +119,18 @@ def create_user(request: HttpRequest, user: CreateUser):
         return user_obj
     except IntegrityError:
         return 400, {"detail": "Username already exists."}
+
+
+@api.get(
+    "/users/", response={200: list[UserDTO], 400: GenericDTO}, auth=django_auth
+)
+@paginate
+def list_users(request: HttpRequest):
+    if request.user.is_superuser:  # type: ignore
+        user_obj = User.objects.all()
+        return user_obj
+    else:
+        return 400, {"detail": "Unauthorized request."}
 
 
 @api.post(

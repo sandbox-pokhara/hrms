@@ -31,7 +31,8 @@ export interface paths {
         /** List Projects */
         get: operations["core_api_list_projects"];
         put?: never;
-        post?: never;
+        /** Create Project */
+        post: operations["core_api_create_project"];
         delete?: never;
         options?: never;
         head?: never;
@@ -48,7 +49,8 @@ export interface paths {
         /** List Activities */
         get: operations["core_api_list_activities"];
         put?: never;
-        post?: never;
+        /** Create Activity */
+        post: operations["core_api_create_activity"];
         delete?: never;
         options?: never;
         head?: never;
@@ -79,7 +81,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Users */
+        get: operations["core_api_list_users"];
         put?: never;
         /** Create User */
         post: operations["core_api_create_user"];
@@ -334,6 +337,16 @@ export interface components {
             /** Name */
             name: string;
         };
+        /** GenericDTO */
+        GenericDTO: {
+            /** Detail */
+            detail: string;
+        };
+        /** CreateProject */
+        CreateProject: {
+            /** Project */
+            project: string;
+        };
         /** ActivityDTO */
         ActivityDTO: {
             /** ID */
@@ -357,6 +370,11 @@ export interface components {
             items: components["schemas"]["ActivityDTO"][];
             /** Count */
             count: number;
+        };
+        /** CreateActivity */
+        CreateActivity: {
+            /** Activity */
+            activity: string;
         };
         /** UserDTO */
         UserDTO: {
@@ -444,17 +462,19 @@ export interface components {
              */
             user_permissions: number[];
         };
-        /** GenericDTO */
-        GenericDTO: {
-            /** Detail */
-            detail: string;
-        };
         /** CreateUser */
         CreateUser: {
             /** Username */
             username: string;
             /** Password */
             password: string;
+        };
+        /** PagedUserDTO */
+        PagedUserDTO: {
+            /** Items */
+            items: components["schemas"]["UserDTO"][];
+            /** Count */
+            count: number;
         };
         /** ChangePassword */
         ChangePassword: {
@@ -674,6 +694,30 @@ export interface operations {
             };
         };
     };
+    core_api_create_project: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateProject"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
     core_api_list_activities: {
         parameters: {
             query?: {
@@ -697,6 +741,30 @@ export interface operations {
             };
         };
     };
+    core_api_create_activity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateActivity"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
     core_api_current_user: {
         parameters: {
             query?: never;
@@ -713,6 +781,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserDTO"];
+                };
+            };
+        };
+    };
+    core_api_list_users: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PagedUserDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
                 };
             };
         };

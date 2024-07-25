@@ -36,9 +36,9 @@ export default async function TimeLogs({
     <MainLayout currentUser={currentUser} active="absences">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Absences</h1>
-      </div>
-      <div className="ml-auto">
-        <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
+        <div className="ml-auto">
+          <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
+        </div>
       </div>
       <Table>
         <TableHeader>
@@ -64,10 +64,8 @@ export default async function TimeLogs({
           </TableBody>
         ) : (
           <TableBody>
-            <TableRow>
-              <TableCell colSpan={7} className="text-center">
-                No absences found.
-              </TableCell>
+            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
+              <TableCell colSpan={7}>No absences found.</TableCell>
             </TableRow>
           </TableBody>
         )}
