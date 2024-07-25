@@ -104,6 +104,8 @@ export default async function TimeSummary({
                   },
                   0
                 );
+                const totalDifference =
+                  userTotalHoursWorked - userExpectedHours;
 
                 return (
                   <TableRow key={userSummary.user}>
@@ -112,18 +114,20 @@ export default async function TimeSummary({
                       className={cn(
                         "font-medium",
                         showDifference
-                          ? userTotalHoursWorked - userExpectedHours >= 0
+                          ? totalDifference >= 0
                             ? "text-green-600"
                             : "text-red-600"
                           : "text-blue-600"
                       )}
                     >
-                      {showDifference &&
-                        userTotalHoursWorked - userExpectedHours >= 0 &&
-                        "+"}
+                      {showDifference
+                        ? totalDifference >= 0
+                          ? "+"
+                          : "-"
+                        : null}
                       {convertHoursToHHMM(
                         showDifference
-                          ? userTotalHoursWorked - userExpectedHours
+                          ? Math.abs(totalDifference)
                           : userTotalHoursWorked
                       )}
                     </TableCell>
@@ -131,40 +135,30 @@ export default async function TimeSummary({
                       const dayData = userSummary.summary.find(
                         (item) => item.date === format(date, "yyyy-MM-dd")
                       );
-                      console.log(dayData);
+                      const difference =
+                        (dayData?.hours_worked || 0) -
+                        (dayData?.expected_hours || 0);
+                      const sign =
+                        showDifference && !dayData?.holiday
+                          ? difference >= 0
+                            ? "+"
+                            : "-"
+                          : null;
 
                       return (
                         <TableCell
                           key={date.toISOString()}
                           className={cn({
-                            "bg-muted":
-                              dayData?.weekday === "sat" ||
-                              dayData?.holiday.length,
-                            "text-green-600":
-                              showDifference &&
-                              (dayData?.hours_worked || 0) -
-                                (dayData?.expected_hours || 0) >=
-                                0,
-                            "text-red-600":
-                              showDifference &&
-                              (dayData?.hours_worked || 0) -
-                                (dayData?.expected_hours || 0) <
-                                0,
+                            "bg-muted": dayData?.holiday.length,
+                            "text-green-600": showDifference && difference >= 0,
+                            "text-red-600": showDifference && difference < 0,
                           })}
                         >
-                          {showDifference &&
-                            dayData?.weekday !== "sat" &&
-                            (dayData?.hours_worked || 0) -
-                              (dayData?.expected_hours || 0) >=
-                              0 &&
-                            "+"}
-                          {dayData?.holiday || dayData?.weekday === "sat"
+                          {sign}
+                          {dayData?.holiday
                             ? ""
                             : showDifference
-                            ? convertHoursToHHMM(
-                                (dayData?.hours_worked || 0) -
-                                  (dayData?.expected_hours || 0)
-                              )
+                            ? convertHoursToHHMM(Math.abs(difference))
                             : dayData?.hours_worked
                             ? convertHoursToHHMM(dayData?.hours_worked)
                             : ""}
