@@ -40,7 +40,7 @@ export default async function TimeLogs({
             <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>
-        {holidays ? (
+        {holidays?.items.length ? (
           <TableBody>
             {holidays.items.map((i) => (
               <TableRow key={i.id}>
@@ -53,10 +53,8 @@ export default async function TimeLogs({
           </TableBody>
         ) : (
           <TableBody>
-            <TableRow>
-              <TableCell colSpan={3} className="text-center">
-                No holidays found.
-              </TableCell>
+            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
+              <TableCell colSpan={3}>No holidays found.</TableCell>
             </TableRow>
           </TableBody>
         )}

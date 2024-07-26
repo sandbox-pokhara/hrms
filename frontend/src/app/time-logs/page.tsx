@@ -47,35 +47,39 @@ export default async function TimeLogs({
             <TableHead>Activity</TableHead>
           </TableRow>
         </TableHeader>
-        {timeLogs ? (
+        {timeLogs?.items.length ? (
           <TableBody>
             {timeLogs.items.map((i) => (
               <TableRow key={i.id}>
-                <TableCell>{i.user__username}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.user__username}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
                   <TimeLogStart start={i.start} />
                 </TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   <TimeLogEnd end={i.end} />
                 </TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   {i.end ? (
                     getDuration(new Date(i.start), new Date(i.end))
                   ) : (
-                    <CountUp date={new Date(i.start)} />
+                    <CountUp date={new Date(i.start)} title="" />
                   )}
                 </TableCell>
-                <TableCell>{i.project__name}</TableCell>
-                <TableCell>{i.activity__name}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.project__name}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.activity__name}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         ) : (
           <TableBody>
-            <TableRow>
-              <TableCell colSpan={7} className="text-center">
-                No time logs found.
-              </TableCell>
+            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
+              <TableCell colSpan={7}>No time logs found.</TableCell>
             </TableRow>
           </TableBody>
         )}

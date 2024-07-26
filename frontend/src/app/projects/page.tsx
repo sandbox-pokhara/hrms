@@ -44,12 +44,12 @@ export default async function Projects({
             <TableHead>Date Created</TableHead>
           </TableRow>
         </TableHeader>
-        {projects ? (
+        {projects?.items.length ? (
           <TableBody>
             {projects.items.map((i) => (
               <TableRow key={i.id}>
-                <TableCell>{i.name}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">{i.name}</TableCell>
+                <TableCell className="whitespace-nowrap">
                   <TimeLogStart start={i.date_created} />
                 </TableCell>
               </TableRow>
@@ -57,7 +57,7 @@ export default async function Projects({
           </TableBody>
         ) : (
           <TableBody>
-            <TableRow className="text-center h-40 hover:bg-none text-muted-foreground">
+            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
               <TableCell colSpan={7}>No activites found.</TableCell>
             </TableRow>
           </TableBody>

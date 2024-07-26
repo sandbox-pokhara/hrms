@@ -200,7 +200,7 @@ export default async function TimeSummary({
                 </TableRow>
               </>
             ) : (
-              <TableRow>
+              <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
                 <TableCell colSpan={9} className="text-center">
                   No time summary data found.
                 </TableCell>
