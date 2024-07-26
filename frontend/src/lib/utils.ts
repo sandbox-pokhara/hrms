@@ -28,9 +28,10 @@ export function getDuration(start: Date, end: Date) {
     end,
   });
   let text = "";
-  if (duration.hours) text += duration.hours + "h";
-  if (duration.minutes) text += duration.minutes + "m";
-  return text;
+  text += (duration.hours || 0) + "h ";
+  text += (duration.minutes || 0) + "m";
+
+  return text.trim();
 }
 
 export function convertHoursToHHMM(hours: number): string {

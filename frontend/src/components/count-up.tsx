@@ -16,16 +16,18 @@ export default function CountUp({
   useEffect(() => {
     const interval = setInterval(() => {
       setNow(new Date());
-
-      document.title = `${getDuration(new Date(date), new Date())} - ${title
-        .split("-")
-        .join(" ")
-        .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
-          letter.toUpperCase()
-        )} - Sandbox HRMS`;
-    }, 1000);
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    document.title = `${getDuration(date, now)} - ${title
+      .split("-")
+      .join(" ")
+      .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+        letter.toUpperCase()
+      )} - Sandbox HRMS`;
+  }, [now]);
 
   return <div suppressHydrationWarning>{duration}</div>;
 }

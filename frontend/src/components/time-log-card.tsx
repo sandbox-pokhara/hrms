@@ -62,6 +62,12 @@ export default function TimeLogCard({
                 "X-CSRFToken": csrftoken,
               },
             });
+            document.title = `${activeTitle
+              .split("-")
+              .join(" ")
+              .replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+                letter.toUpperCase()
+              )} - Sandbox HRMS`;
             if (res.status === 401) router.push("/login/");
             if (res.ok) setCurrentTimeLog(null);
           }}
