@@ -64,7 +64,7 @@ export default async function TimeLogs({
                   {i.end ? (
                     getDuration(new Date(i.start), new Date(i.end))
                   ) : (
-                    <CountUp date={new Date(i.start)} title="" />
+                    <CountUp date={new Date(i.start)} title="time-logs" />
                   )}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
