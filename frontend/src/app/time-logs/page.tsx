@@ -42,6 +42,7 @@ export default async function TimeLogs({
             <TableHead>User</TableHead>
             <TableHead>Start</TableHead>
             <TableHead>End</TableHead>
+            <TableHead>Duration</TableHead>
             <TableHead>Project</TableHead>
             <TableHead>Activity</TableHead>
           </TableRow>
@@ -58,6 +59,11 @@ export default async function TimeLogs({
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <TimeLogEnd end={i.end} />
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.end
+                    ? getDuration(new Date(i.start), new Date(i.end))
+                    : getDuration(new Date(i.start), new Date())}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {i.project__name}
