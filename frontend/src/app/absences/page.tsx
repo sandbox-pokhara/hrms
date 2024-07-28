@@ -36,7 +36,10 @@ export default async function TimeLogs({
     <MainLayout currentUser={currentUser} active="absences">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Absences</h1>
-        <div className="ml-auto">
+        <div className="ml-auto flex gap-4 items-center">
+          <span className="whitespace-nowrap">
+            Reamining: {remainingAbsences.value}
+          </span>
           <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
         </div>
       </div>
@@ -79,7 +82,6 @@ export default async function TimeLogs({
         }
         path="/absences/"
       />
-      Reamining: {remainingAbsences.value}
     </MainLayout>
   );
 }

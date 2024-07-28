@@ -16,6 +16,7 @@ import { toast } from "./ui/use-toast";
 import { Input } from "./ui/input";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 export function CreateActivity() {
   const router = useRouter();
@@ -61,14 +62,15 @@ export function CreateActivity() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-fit">
-          Create Activity
+        <Button size="sm" className="w-fit flex items-center gap-1">
+          <Plus size={14} />
+          Add Activity
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={createActivity}>
           <DialogHeader>
-            <DialogTitle>Create Activity</DialogTitle>
+            <DialogTitle>Add Activity</DialogTitle>
             <DialogDescription>Provide a activity name.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
