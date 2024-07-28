@@ -229,7 +229,7 @@ def time_log_summary(
     logs = logs.values("user", "start", "end")
     holidays = Holiday.objects.filter(date__gte=start, date__lte=end)
     absences = AbsenceBalance.objects.filter(
-        date__gte=start, date__lte=end, delta=-1
+        date__gte=start, date__lte=end, delta=-1, user=users
     )
 
     # data generation
