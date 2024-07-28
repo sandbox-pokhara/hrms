@@ -553,6 +553,8 @@ export interface components {
             weekday: string;
             /** Holiday */
             holiday: string;
+            /** Absence */
+            absence: string;
         };
         /** AbsenceBalanceDTO */
         AbsenceBalanceDTO: {

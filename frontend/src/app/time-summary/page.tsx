@@ -9,10 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getCurrentUser, getTimeSummary } from "@/lib/apiServer";
-import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
+import {
+  format,
+  startOfWeek,
+  endOfWeek,
+  eachDayOfInterval,
+  isSameDay,
+} from "date-fns";
 import { cn, convertHoursToHHMM } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { components } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Time Summary - Sandbox HRMS",
@@ -53,6 +60,7 @@ export default async function TimeSummary({
     timeSummary?.reduce<IWorkingHours>(
       (acc, user) => {
         user.summary.forEach((day) => {
+          if (day?.holiday || day?.absence) return acc.total;
           if (!acc[day?.date]) {
             acc[day?.date] = 0;
           }
@@ -81,11 +89,13 @@ export default async function TimeSummary({
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
-              <TableHead>Total</TableHead>
+              <TableHead className="w-[100px]">Total</TableHead>
               {dateRange.map((date) => (
                 <TableHead
                   key={date.toISOString()}
-                  className="whitespace-nowrap"
+                  className={cn("w-[100px] whitespace-nowrap", {
+                    "bg-muted": isSameDay(new Date(), date),
+                  })}
                 >
                   {format(date, "EEE dd")}
                 </TableHead>
@@ -97,14 +107,18 @@ export default async function TimeSummary({
               <>
                 {timeSummary.map((userSummary) => {
                   const userTotalHoursWorked = userSummary.summary.reduce(
-                    (acc, item) => item.hours_worked + acc,
+                    (acc, item) => {
+                      if (item?.holiday || item?.absence) return acc;
+                      return item.hours_worked + acc;
+                    },
                     0
                   );
                   const userExpectedHours = userSummary.summary.reduce(
                     (acc, item) => {
                       if (
                         new Date(item.date) > new Date() ||
-                        item.holiday.length
+                        item.holiday.length ||
+                        item.absence.length
                       )
                         return acc;
                       return item.expected_hours + acc;
@@ -141,14 +155,22 @@ export default async function TimeSummary({
                         )}
                       </TableCell>
                       {dateRange.map((date) => {
-                        const dayData = userSummary.summary.find(
+                        const dayData:
+                          | components["schemas"]["TimeLogSummaryPerDay"]
+                          | undefined = userSummary.summary.find(
                           (item) => item.date === format(date, "yyyy-MM-dd")
                         );
+                        if (!dayData || new Date(dayData?.date) > new Date())
+                          return null;
+
                         const difference =
                           (dayData?.hours_worked || 0) -
                           (dayData?.expected_hours || 0);
+
                         const sign =
-                          showDifference && !dayData?.holiday
+                          showDifference &&
+                          !dayData?.holiday &&
+                          !dayData?.absence
                             ? new Intl.NumberFormat("en-US", {
                                 signDisplay: "exceptZero",
                               }).format(difference)[0]
@@ -157,15 +179,17 @@ export default async function TimeSummary({
                         return (
                           <TableCell
                             key={date.toISOString()}
-                            className={cn("w-[100px] whitespace-nowrap", {
-                              "bg-muted": dayData?.holiday.length,
+                            className={cn("whitespace-nowrap", {
+                              "bg-muted":
+                                dayData?.holiday.length ||
+                                dayData?.absence?.length,
                               "text-green-600":
                                 showDifference && difference >= 0,
                               "text-red-600": showDifference && difference < 0,
                             })}
                           >
                             {sign}
-                            {dayData?.holiday
+                            {dayData?.holiday || dayData?.absence
                               ? ""
                               : showDifference
                               ? convertHoursToHHMM(Math.abs(difference))

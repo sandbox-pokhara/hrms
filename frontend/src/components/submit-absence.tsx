@@ -35,8 +35,8 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
       });
       return;
     }
-    const today = new Date();
-    if (date && isBefore(date, today)) {
+
+    if (date && new Date() < date) {
       toast({
         title: "Please select a valid date.",
       });
@@ -51,15 +51,16 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
           "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
-          date: date,
+          date: date?.toISOString().split("T")[0],
           description: reason,
         }),
       });
+      if (res.ok) {
+        toast({
+          title: "Absence submited successfully.",
+        });
+      }
       if (res.status === 401) router.push("/login/");
-      if (!res.ok) return null;
-      toast({
-        title: "Absence submited successfully.",
-      });
     } catch (err) {
       toast({
         title: "Something went wrong.",

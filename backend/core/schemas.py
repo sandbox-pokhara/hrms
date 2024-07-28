@@ -95,6 +95,7 @@ class TimeLogSummaryPerDay(Schema):
     hours_worked: float
     weekday: str
     holiday: str
+    absence: str
 
 
 class TimeLogSummaryDTO(Schema):

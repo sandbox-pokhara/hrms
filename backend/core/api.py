@@ -219,7 +219,7 @@ def time_log_summary(
     if request.user.is_superuser:  # type: ignore
         users = User.objects.all()
     else:
-        users = User.objects.filter(user=request.user)
+        users = User.objects.filter(username=request.user)
     logs = TimeLog.objects.filter(
         start__date__gte=start,
         start__date__lte=end,
@@ -227,9 +227,15 @@ def time_log_summary(
         user__in=users,
     ).values("user", "start", "end")
     holidays = Holiday.objects.filter(date__gte=start, date__lte=end)
+    absences = AbsenceBalance.objects.filter(
+        date__gte=start, date__lte=end, delta=-1
+    )
 
     # data generation
     holidays_map = {h.date: h.name for h in holidays}
+    absences_map = {
+        f"{a.date}_{a.user.username}": a.description for a in absences
+    }
     output: list[TimeLogSummaryDTO] = []
     for u in users:
         user_data = TimeLogSummaryDTO(user=u.username, summary=[])
@@ -252,12 +258,14 @@ def time_log_summary(
             weekday = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"][
                 date.weekday()
             ]
-            if date in holidays_map:
-                holiday = holidays_map[date]
-                expected_hours = 0
-            else:
-                holiday = ""
-                expected_hours = getattr(u, f"expected_hours_{weekday}")
+
+            holiday = holidays_map.get(date, "")
+            absence = absences_map.get(f"{date}_{u.username}", "")
+            expected_hours = (
+                0
+                if holiday or absence
+                else getattr(u, f"expected_hours_{weekday}", 0)
+            )
             user_data.summary.append(
                 TimeLogSummaryPerDay(
                     date=date,
@@ -265,6 +273,7 @@ def time_log_summary(
                     weekday=weekday,
                     expected_hours=expected_hours,
                     holiday=holiday,
+                    absence=absence,
                 )
             )
             date += datetime.timedelta(days=1)
@@ -309,6 +318,7 @@ def submit_absence(request: HttpRequest, data: SubmitAbsence):
     )
     if obj["value"] < 1:
         return 400, {"detail": "You have no absence balance."}
+
     AbsenceBalance.objects.create(
         user=request.user,
         date=data.date,
@@ -316,7 +326,7 @@ def submit_absence(request: HttpRequest, data: SubmitAbsence):
         delta=-1,
         created_by=request.user,
     )
-    return 400, {"detail": "Success."}
+    return 200, {"detail": "Success."}
 
 
 @api.post("/auth/login/", response={200: GenericDTO, 400: GenericDTO})

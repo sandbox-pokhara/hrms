@@ -54,11 +54,17 @@ export default async function TimeLogs({
           <TableBody>
             {absenceBalances?.items.map((i) => (
               <TableRow key={i.id}>
-                <TableCell>{i.user__username}</TableCell>
-                <TableCell>{i.date}</TableCell>
-                <TableCell>{i.description}</TableCell>
-                <TableCell>{i.delta}</TableCell>
-                <TableCell>{i.created_by__username}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.user__username}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">{i.date}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.description}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">{i.delta}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {i.created_by__username}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
