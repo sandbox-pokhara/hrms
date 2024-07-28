@@ -221,16 +221,17 @@ def time_log_summary(
         start__date__lte=end,
         end__isnull=False,
     )
+    absences = AbsenceBalance.objects.filter(
+        date__gte=start, date__lte=end, delta=-1
+    )
     if request.user.is_superuser:  # type: ignore
         users = User.objects.all()
     else:
         users = User.objects.filter(id=request.user.pk)
         logs = logs.filter(user=request.user)
+        absences = absences.filter(user=request.user)
     logs = logs.values("user", "start", "end")
     holidays = Holiday.objects.filter(date__gte=start, date__lte=end)
-    absences = AbsenceBalance.objects.filter(
-        date__gte=start, date__lte=end, delta=-1, user__in=users
-    )
 
     # data generation
     holidays_map = {h.date: h.name for h in holidays}
