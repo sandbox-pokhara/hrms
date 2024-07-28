@@ -216,16 +216,17 @@ def time_log_summary(
     request: HttpRequest, start: datetime.date, end: datetime.date
 ):
     # database
-    if request.user.is_superuser:  # type: ignore
-        users = User.objects.all()
-    else:
-        users = User.objects.filter(username=request.user)
     logs = TimeLog.objects.filter(
         start__date__gte=start,
         start__date__lte=end,
         end__isnull=False,
-        user__in=users,
-    ).values("user", "start", "end")
+    )
+    if request.user.is_superuser:  # type: ignore
+        users = User.objects.all()
+    else:
+        users = User.objects.filter(id=request.user.pk)
+        logs = logs.filter(user=request.user)
+    logs = logs.values("user", "start", "end")
     holidays = Holiday.objects.filter(date__gte=start, date__lte=end)
     absences = AbsenceBalance.objects.filter(
         date__gte=start, date__lte=end, delta=-1

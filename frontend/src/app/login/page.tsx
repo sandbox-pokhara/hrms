@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function Login() {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center p-2">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>

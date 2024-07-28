@@ -16,6 +16,7 @@ import { toast } from "./ui/use-toast";
 import { Input } from "./ui/input";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 export function CreateProject() {
   const router = useRouter();
@@ -61,14 +62,15 @@ export function CreateProject() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-fit">
-          Create Project
+        <Button size="sm" className="w-fit flex items-center gap-1">
+          <Plus size={14} />
+          Add Project
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={createProject}>
           <DialogHeader>
-            <DialogTitle>Create Project</DialogTitle>
+            <DialogTitle>Add Project</DialogTitle>
             <DialogDescription>Provide a project name.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">

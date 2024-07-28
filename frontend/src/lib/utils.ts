@@ -28,7 +28,7 @@ export function getDuration(start: Date, end: Date) {
     end,
   });
   let text = "";
-  text += (duration.hours || 0) + "h ";
+  text += (duration.hours || 0) + "h";
   text += (duration.minutes || 0) + "m";
 
   return text.trim();

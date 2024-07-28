@@ -16,6 +16,7 @@ import { toast } from "./ui/use-toast";
 import { Input } from "./ui/input";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 export function CreateUser() {
   const router = useRouter();
@@ -63,8 +64,9 @@ export function CreateUser() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-fit">
-          Create User
+        <Button size="sm" className="w-fit flex gap-1">
+          <Plus size={14} />
+          Add User
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
