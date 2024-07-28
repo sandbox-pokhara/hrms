@@ -11,6 +11,7 @@ import {
 import { format } from "date-fns";
 import Pagination from "@/components/pagination";
 import { getCurrentUser, getHolidays } from "@/lib/apiServer";
+import { AddHoliday } from "@/components/add-holiday";
 
 export const metadata: Metadata = {
   title: "Holidays - Sandbox HRMS",
@@ -32,6 +33,9 @@ export default async function TimeLogs({
     <MainLayout currentUser={currentUser} active="holidays">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Holidays</h1>
+        <div className="ml-auto">
+          {currentUser.is_superuser && <AddHoliday />}
+        </div>
       </div>
       <Table>
         <TableHeader>

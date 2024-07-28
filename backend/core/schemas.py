@@ -109,3 +109,8 @@ class CreateProject(Schema):
 
 class CreateActivity(Schema):
     activity: str
+
+
+class AddHoliday(Schema):
+    name: str
+    date: datetime.date

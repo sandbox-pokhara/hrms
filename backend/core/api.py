@@ -26,6 +26,7 @@ from core.models import TimeLog
 from core.models import User
 from core.schemas import AbsenceBalanceDTO
 from core.schemas import ActivityDTO
+from core.schemas import AddHoliday
 from core.schemas import ChangePassword
 from core.schemas import CreateActivity
 from core.schemas import CreateProject
@@ -355,3 +356,16 @@ def auth_logout(request: HttpRequest):
 @paginate
 def list_holidays(request: HttpRequest):
     return Holiday.objects.all().order_by("-id")
+
+
+@api.post(
+    "/holidays/submit/",
+    auth=django_auth,
+    response={200: GenericDTO, 400: GenericDTO},
+)
+def add_holiday(request: HttpRequest, data: AddHoliday):
+    if not request.user.is_superuser: # type: ignore
+        return 400, {"detail": "Unauthorized."}
+
+    Holiday.objects.create(name=data.name, date=data.date)
+    return 200, {"detail": "Success."}
