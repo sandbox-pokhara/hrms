@@ -52,6 +52,7 @@ export function CreateActivity() {
       toast({
         title: "Activity created successfully.",
       });
+      router.refresh();
     } catch (err) {
       toast({
         title: "Something went wrong.",

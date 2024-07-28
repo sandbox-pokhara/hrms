@@ -54,6 +54,7 @@ export function CreateUser() {
       toast({
         title: "User created successfully.",
       });
+      router.refresh();
     } catch (err) {
       toast({
         title: "Something went wrong.",

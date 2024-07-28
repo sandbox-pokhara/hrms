@@ -59,6 +59,7 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
         toast({
           title: "Absence submited successfully.",
         });
+        router.refresh();
       }
       if (res.status === 401) router.push("/login/");
     } catch (err) {
