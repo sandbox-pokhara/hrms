@@ -65,7 +65,7 @@ export default function Header({
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col px-3">
+        <SheetContent side="left" className="flex flex-col p-3 pt-2">
           <SheetHeader>
             <SheetTitle>
               <VisuallyHidden.Root>Sandbox HRMS</VisuallyHidden.Root>
