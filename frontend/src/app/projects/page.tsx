@@ -13,6 +13,7 @@ import { Metadata } from "next";
 import TimeLogStart from "@/components/time-log-start";
 import Pagination from "@/components/pagination";
 import { CreateProject } from "@/components/create-project";
+import TableEmptyState from "@/components/table-empty-state";
 
 export const metadata: Metadata = {
   title: "Time Logs - Sandbox HRMS",
@@ -56,11 +57,7 @@ export default async function Projects({
             ))}
           </TableBody>
         ) : (
-          <TableBody>
-            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
-              <TableCell colSpan={7}>No activites found.</TableCell>
-            </TableRow>
-          </TableBody>
+          <TableEmptyState colSpan={2} message="No activites found." />
         )}
       </Table>
       <Pagination

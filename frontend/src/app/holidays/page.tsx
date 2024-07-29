@@ -11,6 +11,7 @@ import {
 import { format } from "date-fns";
 import Pagination from "@/components/pagination";
 import { getCurrentUser, getHolidays } from "@/lib/apiServer";
+import TableEmptyState from "@/components/table-empty-state";
 
 export const metadata: Metadata = {
   title: "Holidays - Sandbox HRMS",
@@ -52,11 +53,7 @@ export default async function TimeLogs({
             ))}
           </TableBody>
         ) : (
-          <TableBody>
-            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
-              <TableCell colSpan={3}>No holidays found.</TableCell>
-            </TableRow>
-          </TableBody>
+          <TableEmptyState colSpan={3} message="No holidays found." />
         )}
       </Table>
       <Pagination

@@ -17,7 +17,6 @@ import { Input } from "./ui/input";
 import { DatePicker } from "./date-picker";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { isBefore } from "date-fns";
 
 interface Props {
   remainigAbsences: number;

@@ -1,19 +1,13 @@
 import MainLayout from "@/components/main-layout";
 import type { Metadata } from "next";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { getDuration } from "@/lib/utils";
 import Pagination from "@/components/pagination";
-import TimeLogStart from "@/components/time-log-start";
-import TimeLogEnd from "@/components/time-log-end";
-import CountUp from "@/components/count-up";
-import { getCurrentUser, getTimeLogs } from "@/lib/apiServer";
+import {
+  getActivities,
+  getCurrentUser,
+  getProjects,
+  getTimeLogs,
+} from "@/lib/apiServer";
+import DataTable from "./_components/data-table";
 
 export const metadata: Metadata = {
   title: "Time Logs - Sandbox HRMS",
@@ -28,60 +22,21 @@ export default async function TimeLogs({
   };
 }) {
   const page = parseInt(searchParams?.page || "1");
-  const timeLogs = await getTimeLogs(page);
-  const currentUser = await getCurrentUser();
+  const [timeLogs, currentUser, projects, activities] = await Promise.all([
+    getTimeLogs(page),
+    getCurrentUser(),
+    getProjects(),
+    getActivities(1, 100),
+  ]);
 
   return (
     <MainLayout currentUser={currentUser} active="time-logs">
-      <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Time Logs</h1>
-      </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Start</TableHead>
-            <TableHead>End</TableHead>
-            <TableHead>Duration</TableHead>
-            <TableHead>Project</TableHead>
-            <TableHead>Activity</TableHead>
-          </TableRow>
-        </TableHeader>
-        {timeLogs?.items.length ? (
-          <TableBody>
-            {timeLogs.items.map((i) => (
-              <TableRow key={i.id}>
-                <TableCell className="whitespace-nowrap">
-                  {i.user__username}
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <TimeLogStart start={i.start} />
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <TimeLogEnd end={i.end} />
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  {i.end
-                    ? getDuration(new Date(i.start), new Date(i.end))
-                    : getDuration(new Date(i.start), new Date())}
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  {i.project__name}
-                </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  {i.activity__name}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        ) : (
-          <TableBody>
-            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
-              <TableCell colSpan={7}>No time logs found.</TableCell>
-            </TableRow>
-          </TableBody>
-        )}
-      </Table>
+      <DataTable
+        timeLogs={timeLogs}
+        currentUser={currentUser}
+        projects={projects}
+        activities={activities}
+      />
       <Pagination
         pageIndex={page}
         totalPages={

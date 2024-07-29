@@ -1,6 +1,7 @@
 import MainLayout from "@/components/main-layout";
 import Pagination from "@/components/pagination";
 import { SubmitAbsence } from "@/components/submit-absence";
+import TableEmptyState from "@/components/table-empty-state";
 import {
   Table,
   TableBody,
@@ -50,7 +51,7 @@ export default async function TimeLogs({
             <TableHead>Date</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Delta</TableHead>
-            <TableHead>Created By</TableHead>
+            <TableHead className="whitespace-nowrap">Created By</TableHead>
           </TableRow>
         </TableHeader>
         {absenceBalances?.items.length ? (
@@ -72,11 +73,7 @@ export default async function TimeLogs({
             ))}
           </TableBody>
         ) : (
-          <TableBody>
-            <TableRow className="text-center h-40 hover:bg-transparent text-muted-foreground">
-              <TableCell colSpan={7}>No absences found.</TableCell>
-            </TableRow>
-          </TableBody>
+          <TableEmptyState colSpan={5} message="No absences found." />
         )}
       </Table>
       <Pagination
