@@ -120,3 +120,8 @@ class EditTimeLogs(Schema):
     time_log_ids: list[int]
     activity_id: Optional[int] = None
     project_id: Optional[int] = None
+
+
+class AddHoliday(Schema):
+    name: str
+    date: datetime.date

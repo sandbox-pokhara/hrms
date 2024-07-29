@@ -35,13 +35,27 @@ export default async function Users({
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Expected Hours Sun</TableHead>
-            <TableHead>Expected Hours Mon</TableHead>
-            <TableHead>Expected Hours Tues</TableHead>
-            <TableHead>Expected Hours Wed</TableHead>
-            <TableHead>Expected Hours Thu</TableHead>
-            <TableHead>Expected Hours Fri</TableHead>
-            <TableHead>Expected Hours Sat</TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Sun
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Mon
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Tues
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Wed
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Thu
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Fri
+            </TableHead>
+            <TableHead className="whitespace-nowrap">
+              Expected Hours Sat
+            </TableHead>
           </TableRow>
         </TableHeader>
         {users ? (
