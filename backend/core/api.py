@@ -359,7 +359,7 @@ def list_holidays(request: HttpRequest):
 
 
 @api.post(
-    "/holidays//",
+    "/holidays/",
     auth=django_auth,
     response={200: GenericDTO, 400: GenericDTO},
 )
