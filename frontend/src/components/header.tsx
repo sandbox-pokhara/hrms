@@ -65,7 +65,7 @@ export default function Header({
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col">
+        <SheetContent side="left" className="flex flex-col px-3">
           <SheetHeader>
             <SheetTitle>
               <VisuallyHidden.Root>Sandbox HRMS</VisuallyHidden.Root>
@@ -74,7 +74,7 @@ export default function Header({
               <VisuallyHidden.Root>Sidebar menus</VisuallyHidden.Root>
             </SheetDescription>
           </SheetHeader>
-          <nav className="grid items-start text-sm font-medium lg:px-4">
+          <nav className="grid items-start text-sm font-medium">
             <Link
               href="/"
               className={active === "dashboard" ? activeLink : inactiveLink}
