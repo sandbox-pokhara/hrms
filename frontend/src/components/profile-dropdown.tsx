@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/lib/utils";
 import { components } from "@/lib/schema";

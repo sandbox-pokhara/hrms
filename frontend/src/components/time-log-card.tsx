@@ -36,7 +36,7 @@ export default function TimeLogCard({
   return currentTimeLog ? (
     <Button
       variant="outline"
-      className="inline-flex gap-2 items-center border rounded h-9 px-2 cursor-pointer"
+      className="inline-flex gap-2 items-center border rounded-md h-9 px-2 cursor-pointer"
       onClick={async () => {
         const csrftoken = getCookie("csrftoken");
         if (!csrftoken) return false;
