@@ -121,8 +121,11 @@ export default function DataTable({
                     />
                   </TableHead>
                 )}
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="whitespace-nowrap inline-flex gap-1.5 items-center">
                   {i.user__username}
+                  {!i.end && (
+                    <div className="w-1.5 h-1.5 overflow-hidden rounded-full bg-green-500" />
+                  )}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <TimeLogStart start={i.start} />
