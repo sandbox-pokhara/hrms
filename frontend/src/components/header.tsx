@@ -74,7 +74,7 @@ export default function Header({
               <VisuallyHidden.Root>Sidebar menus</VisuallyHidden.Root>
             </SheetDescription>
           </SheetHeader>
-          <nav className="grid gap-2 text-lg font-medium">
+          <nav className="grid items-start text-sm font-medium lg:px-4">
             <Link
               href="/"
               className={active === "dashboard" ? activeLink : inactiveLink}
