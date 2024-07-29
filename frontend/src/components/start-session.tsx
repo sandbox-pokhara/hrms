@@ -40,8 +40,7 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="inline-flex gap-2 items-center border rounded h-8 px-2 cursor-pointer"
-          onClick={() => {}}
+          className="inline-flex gap-2 items-center border rounded h-9 px-2 cursor-pointer"
         >
           <Play size={14} />
           <div>0h0m</div>
