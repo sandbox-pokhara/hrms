@@ -20,8 +20,8 @@ export default function DeleteConfirmation({ disabled, onSubmit }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
-          className="text-destructive"
+          variant="outline"
+          className="text-destructive hover:text-red-500"
           disabled={disabled}
         >
           Delete

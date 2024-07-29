@@ -89,7 +89,7 @@ export default function DataTable({
               <TableHead className="w-[40px]">
                 <Checkbox
                   checked={selectedIds.length === timeLogs?.items.length}
-                  onCheckedChange={(checked) => {
+                  onCheckedChange={(checked: boolean) => {
                     checked
                       ? setSelectedIds([
                           ...timeLogs?.items.map((i) => (i.id ? i.id : 0)),
@@ -115,7 +115,7 @@ export default function DataTable({
                   <TableHead>
                     <Checkbox
                       checked={Boolean(i.id && selectedIds.includes(i.id))}
-                      onCheckedChange={(checked) =>
+                      onCheckedChange={(checked: boolean) =>
                         i.id && handleCheckboxChange(i.id, !!checked)
                       }
                     />
