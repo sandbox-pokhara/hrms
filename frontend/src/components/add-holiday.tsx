@@ -34,7 +34,7 @@ export function AddHoliday() {
     try {
       const csrftoken = getCookie("csrftoken");
       if (!csrftoken) return null;
-      const res = await fetch(`/api/holidays/submit/`, {
+      const res = await fetch(`/api/holidays/`, {
         method: "POST",
         headers: {
           "X-CSRFToken": csrftoken,

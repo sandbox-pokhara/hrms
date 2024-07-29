@@ -359,12 +359,12 @@ def list_holidays(request: HttpRequest):
 
 
 @api.post(
-    "/holidays/submit/",
+    "/holidays//",
     auth=django_auth,
     response={200: GenericDTO, 400: GenericDTO},
 )
-def add_holiday(request: HttpRequest, data: AddHoliday):
-    if not request.user.is_superuser: # type: ignore
+def create_holiday(request: HttpRequest, data: AddHoliday):
+    if not request.user.is_superuser:  # type: ignore
         return 400, {"detail": "Unauthorized."}
 
     Holiday.objects.create(name=data.name, date=data.date)
