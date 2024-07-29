@@ -12,7 +12,6 @@ import {
   UsersRound,
 } from "lucide-react";
 import { components } from "@/lib/schema";
-import TimeLogCard from "./time-log-card";
 
 interface Props {
   active:
@@ -26,9 +25,6 @@ interface Props {
     | "projects"
     | "settings";
   currentUser: components["schemas"]["UserDTO"];
-  currentTimeLog: components["schemas"]["TimeLogDTO"] | null;
-  projects: components["schemas"]["PagedProjectDTO"];
-  activities: components["schemas"]["PagedActivityDTO"];
 }
 
 const activeLink =
@@ -36,13 +32,7 @@ const activeLink =
 const inactiveLink =
   "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary";
 
-export default function Sidebar({
-  active,
-  currentUser,
-  currentTimeLog,
-  projects,
-  activities,
-}: Props) {
+export default function Sidebar({ active, currentUser }: Props) {
   return (
     <div className="hidden border-r bg-muted/40 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -124,14 +114,6 @@ export default function Sidebar({
               Settings
             </Link>
           </nav>
-        </div>
-        <div className="mt-auto p-4">
-          <TimeLogCard
-            initial={currentTimeLog}
-            projects={projects}
-            activities={activities}
-            activeTitle={active}
-          />
         </div>
       </div>
     </div>

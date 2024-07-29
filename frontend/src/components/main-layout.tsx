@@ -32,13 +32,7 @@ export default async function MainLayout({
     <>
       <Toaster />
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-        <Sidebar
-          active={active}
-          currentUser={currentUser}
-          projects={projects}
-          activities={activities}
-          currentTimeLog={currentTimeLog}
-        />
+        <Sidebar active={active} currentUser={currentUser} />
         <div className="flex flex-col overflow-auto">
           <Header
             active={active}

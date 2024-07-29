@@ -145,14 +145,6 @@ export default function Header({
               Settings
             </Link>
           </nav>
-          <div className="mt-auto">
-            <TimeLogCard
-              initial={currentTimeLog}
-              projects={projects}
-              activities={activities}
-              activeTitle={active}
-            />
-          </div>
         </SheetContent>
       </Sheet>
       <div className="w-full flex-1">
@@ -167,6 +159,12 @@ export default function Header({
           </div>
         </form>
       </div>
+      <TimeLogCard
+        initial={currentTimeLog}
+        projects={projects}
+        activities={activities}
+        activeTitle={active}
+      />
       <div className="flex items-center gap-[2px]">
         <ProfileDropdown currentUser={currentUser} />
       </div>
