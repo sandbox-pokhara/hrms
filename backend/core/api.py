@@ -17,6 +17,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from ninja import NinjaAPI
 from ninja.pagination import paginate  # type: ignore
 from ninja.security import django_auth
+from ninja.security import django_auth_superuser
 
 from core.models import AbsenceBalance
 from core.models import Activity
@@ -360,12 +361,9 @@ def list_holidays(request: HttpRequest):
 
 @api.post(
     "/holidays/",
-    auth=django_auth,
+    auth=django_auth_superuser,
     response={200: GenericDTO, 400: GenericDTO},
 )
 def create_holiday(request: HttpRequest, data: AddHoliday):
-    if not request.user.is_superuser:  # type: ignore
-        return 400, {"detail": "Unauthorized."}
-
     Holiday.objects.create(name=data.name, date=data.date)
     return 200, {"detail": "Success."}
