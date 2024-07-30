@@ -24,7 +24,7 @@ export default async function MainLayout({
 }>) {
   const [currentTimeLog, projects, activities] = await Promise.all([
     getCurrentTimeLog(),
-    getProjects(),
+    getProjects(1, 100),
     getActivities(1, 100),
   ]);
 
