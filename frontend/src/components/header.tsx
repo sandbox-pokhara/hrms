@@ -26,6 +26,7 @@ import ProfileDropdown from "./profile-dropdown";
 import TimeLogCard from "./time-log-card";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { components } from "@/lib/schema";
+import CommandMenu from "./command";
 
 const activeLink =
   "flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary";
@@ -150,12 +151,7 @@ export default function Header({
       <div className="w-full flex-1">
         <form>
           <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full appearance-none bg-background pl-8 shadow-none max-w-[500px]"
-            />
+            <CommandMenu isSuperUser={currentUser?.is_superuser} />
           </div>
         </form>
       </div>
