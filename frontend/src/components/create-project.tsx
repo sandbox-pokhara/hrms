@@ -50,7 +50,7 @@ export function CreateProject() {
         return;
       }
       toast({
-        title: "Activity created successfully.",
+        title: "Project created successfully.",
       });
       router.refresh();
     } catch (err) {
