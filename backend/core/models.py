@@ -70,10 +70,16 @@ class TimeLog(BaseModel):
         Activity, on_delete=models.PROTECT, related_name="time_logs"
     )
 
+    def __str__(self) -> str:
+        return f"{self.user.username}:{self.project.name}:{self.activity.name}"
+
 
 class Holiday(BaseModel):
     name = models.CharField()
     date = models.DateField()
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class AbsenceBalance(BaseModel):
@@ -82,9 +88,12 @@ class AbsenceBalance(BaseModel):
     )
     date = models.DateField()
     description = models.CharField(max_length=500)
-    delta = models.IntegerField()
+    delta = models.FloatField()
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="created_absence_balances",
     )
+
+    def __str__(self) -> str:
+        return self.user.username

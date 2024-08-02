@@ -14,6 +14,7 @@ class Environment(BaseSettings):
     CSRF_TRUSTED_ORIGINS: str = "http://localhost:3000"
     SECRET_KEY: str = "STRONG_KEY"
     TIME_ZONE: str = "UTC"
+    DRAMATIQ_URL: str = "redis://localhost:6379"
 
 
 ENV = Environment()
