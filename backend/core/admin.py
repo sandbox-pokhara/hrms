@@ -70,7 +70,7 @@ class HolidayAdmin(admin.ModelAdmin[Holiday]):
 @admin.register(AbsenceBalance)
 class AbsenceBalanceAdmin(admin.ModelAdmin[AbsenceBalance]):
     search_fields = ["id", "user", "description"]
-    list_display = ["id", "user", "date", "description", "delta", "created_by"]
+    list_display = ["id", "user", "date", "description", "delta"]
 
     class Meta:
         model = AbsenceBalance

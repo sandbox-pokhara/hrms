@@ -71,7 +71,7 @@ class TimeLog(BaseModel):
     )
 
     def __str__(self) -> str:
-        return f"{self.user.username}:{self.project.name}:{self.activity.name}"
+        return f"{self.user.username}:{self.project.name}:{self.activity.name}:{self.pk}"
 
 
 class Holiday(BaseModel):
@@ -89,11 +89,6 @@ class AbsenceBalance(BaseModel):
     date = models.DateField()
     description = models.CharField(max_length=500)
     delta = models.FloatField()
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="created_absence_balances",
-    )
 
     def __str__(self) -> str:
-        return self.user.username
+        return f"{self.user.username}:{self.pk}"
