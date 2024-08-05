@@ -6,8 +6,14 @@ from core.models import AbsenceBalance
 from core.models import Activity
 from core.models import Holiday
 from core.models import Project
+from core.models import Settings
 from core.models import TimeLog
 from core.models import User
+
+
+@admin.register(Settings)
+class SettingsAdmin(admin.ModelAdmin[Settings]):
+    list_display = ["sick_leave_per_month", "casual_leave_per_month"]
 
 
 @admin.register(User)
@@ -70,7 +76,7 @@ class HolidayAdmin(admin.ModelAdmin[Holiday]):
 @admin.register(AbsenceBalance)
 class AbsenceBalanceAdmin(admin.ModelAdmin[AbsenceBalance]):
     search_fields = ["id", "user", "description"]
-    list_display = ["id", "user", "date", "description", "delta"]
+    list_display = ["id", "user", "date", "description", "delta", "created_by"]
 
     class Meta:
         model = AbsenceBalance

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -89,6 +91,26 @@ class AbsenceBalance(BaseModel):
     date = models.DateField()
     description = models.CharField(max_length=500)
     delta = models.FloatField()
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="created_absence_balances",
+    )
 
     def __str__(self) -> str:
         return f"{self.user.username}:{self.pk}"
+
+
+class Settings(BaseModel):
+    sick_leave_per_month = models.FloatField(default=1)
+    casual_leave_per_month = models.FloatField(default=1.5)
+
+    class Meta(BaseModel.Meta):
+        verbose_name_plural = "Settings"
+
+    def save(self, *args: Any, **kwargs: Any):
+        self.id = 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "Settings"
