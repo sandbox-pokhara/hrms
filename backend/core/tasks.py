@@ -1,4 +1,5 @@
 import dramatiq
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.utils import timezone
 from dramatiq_crontab import cron
@@ -13,10 +14,11 @@ def absence_balance_credit():
     users = User.objects.all()
     superuser = User.objects.filter(is_superuser=True).first()
     if superuser is None:
-        print("No admin found.")
-        return
+        raise ObjectDoesNotExist("No admin found.")
     now = timezone.now()
     settings = Settings.objects.get(id=1)
+    if not settings:
+        raise ObjectDoesNotExist("Settings doesn't exist.")
 
     for user in users:
         AbsenceBalance.objects.create(
