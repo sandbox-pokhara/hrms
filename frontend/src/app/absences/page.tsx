@@ -15,6 +15,7 @@ import {
   getCurrentUser,
   getRemaningAbsences,
 } from "@/lib/apiServer";
+import { Calendar } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -38,8 +39,9 @@ export default async function TimeLogs({
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Absences</h1>
         <div className="ml-auto flex gap-4 items-center">
-          <span className="whitespace-nowrap">
-            Reamining: {remainingAbsences.value}
+          <span className="whitespace-nowrap inline-flex gap-1 items-center">
+            <Calendar size={14} />
+            Absence Balance: {remainingAbsences.value}
           </span>
           <SubmitAbsence remainigAbsences={remainingAbsences?.value} />
         </div>

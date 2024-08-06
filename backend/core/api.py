@@ -342,7 +342,7 @@ def list_absence_balances(request: HttpRequest):
 )
 def remaining_absences(request: HttpRequest):
     obj = AbsenceBalance.objects.filter(user=request.user).aggregate(
-        value=Coalesce(Sum("delta"), 0)
+        value=Coalesce(Sum("delta"), 0.0)
     )
     return obj
 

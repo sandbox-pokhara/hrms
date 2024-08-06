@@ -194,6 +194,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/time-logs/edit/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Update Time Logs */
+        post: operations["core_api_update_time_logs"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/time-logs/delete/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Delete Time Logs */
+        post: operations["core_api_delete_time_logs"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/absence-balances/": {
         parameters: {
             query?: never;
@@ -289,7 +323,8 @@ export interface paths {
         /** List Holidays */
         get: operations["core_api_list_holidays"];
         put?: never;
-        post?: never;
+        /** Create Holiday */
+        post: operations["core_api_create_holiday"];
         delete?: never;
         options?: never;
         head?: never;
@@ -556,6 +591,20 @@ export interface components {
             /** Absence */
             absence: string;
         };
+        /** EditTimeLogs */
+        EditTimeLogs: {
+            /** Time Log Ids */
+            time_log_ids: number[];
+            /** Activity Id */
+            activity_id?: number | null;
+            /** Project Id */
+            project_id?: number | null;
+        };
+        /** TimeLogIds */
+        TimeLogIds: {
+            /** Time Log Ids */
+            time_log_ids: number[];
+        };
         /** AbsenceBalanceDTO */
         AbsenceBalanceDTO: {
             /** User  Username */
@@ -645,6 +694,16 @@ export interface components {
             items: components["schemas"]["HolidayDTO"][];
             /** Count */
             count: number;
+        };
+        /** AddHoliday */
+        AddHoliday: {
+            /** Name */
+            name: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
         };
     };
     responses: never;
@@ -1013,6 +1072,72 @@ export interface operations {
             };
         };
     };
+    core_api_update_time_logs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EditTimeLogs"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_delete_time_logs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TimeLogIds"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
     core_api_list_absence_balances: {
         parameters: {
             query?: {
@@ -1161,6 +1286,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PagedHolidayDTO"];
+                };
+            };
+        };
+    };
+    core_api_create_holiday: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddHoliday"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
                 };
             };
         };

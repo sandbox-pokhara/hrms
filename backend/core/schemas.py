@@ -40,7 +40,7 @@ class AbsenceBalanceDTO(ModelSchema):
 
 
 class RemainingAbsences(Schema):
-    value: int
+    value: float
 
 
 class SubmitAbsence(Schema):
