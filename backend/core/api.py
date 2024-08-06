@@ -354,7 +354,7 @@ def remaining_absences(request: HttpRequest):
 )
 def submit_absence(request: HttpRequest, data: SubmitAbsence):
     obj = AbsenceBalance.objects.filter(user=request.user).aggregate(
-        value=Coalesce(Sum("delta"), 0)
+        value=Coalesce(Sum("delta"), 0.0)
     )
     if obj["value"] < 1:
         return 400, {"detail": "You have no absence balance."}

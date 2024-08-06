@@ -46,7 +46,7 @@ export function AddHoliday() {
       });
       if (res.ok) {
         toast({
-          title: "Absence submited successfully.",
+          title: "Holiday submited successfully.",
         });
         router.refresh();
       }
