@@ -41,6 +41,13 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
       });
       return;
     }
+
+    if (!date) return;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+
     try {
       const csrftoken = getCookie("csrftoken");
       if (!csrftoken) return null;
@@ -50,7 +57,7 @@ export function SubmitAbsence({ remainigAbsences }: Props) {
           "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
-          date: date?.toISOString().split("T")[0],
+          date: formattedDate,
           description: reason,
         }),
       });
