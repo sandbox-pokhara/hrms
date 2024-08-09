@@ -177,6 +177,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/time-logs/users/end/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** End Users Time Log */
+        post: operations["core_api_end_users_time_log"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/time-logs/summary/": {
         parameters: {
             query?: never;
@@ -504,12 +521,90 @@ export interface components {
             /** Password */
             password: string;
         };
-        /** PagedUserDTO */
-        PagedUserDTO: {
+        /** PagedUserListDTO */
+        PagedUserListDTO: {
             /** Items */
-            items: components["schemas"]["UserDTO"][];
+            items: components["schemas"]["UserListDTO"][];
             /** Count */
             count: number;
+        };
+        /** UserListDTO */
+        UserListDTO: {
+            /** Absence Balance */
+            absence_balance: number;
+            /** ID */
+            id?: number | null;
+            /** Last Login */
+            last_login?: string | null;
+            /**
+             * Superuser Status
+             * @description Designates that this user has all permissions without explicitly assigning them.
+             * @default false
+             */
+            is_superuser: boolean;
+            /**
+             * Username
+             * @description Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+             */
+            username: string;
+            /** First Name */
+            first_name?: string | null;
+            /** Last Name */
+            last_name?: string | null;
+            /** Email Address */
+            email?: string | null;
+            /**
+             * Staff Status
+             * @description Designates whether the user can log into this admin site.
+             * @default false
+             */
+            is_staff: boolean;
+            /**
+             * Active
+             * @description Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+             * @default true
+             */
+            is_active: boolean;
+            /**
+             * Date Joined
+             * Format: date-time
+             */
+            date_joined?: string;
+            /**
+             * Expected Hours Sun
+             * @default 0
+             */
+            expected_hours_sun: number;
+            /**
+             * Expected Hours Mon
+             * @default 0
+             */
+            expected_hours_mon: number;
+            /**
+             * Expected Hours Tue
+             * @default 0
+             */
+            expected_hours_tue: number;
+            /**
+             * Expected Hours Wed
+             * @default 0
+             */
+            expected_hours_wed: number;
+            /**
+             * Expected Hours Thu
+             * @default 0
+             */
+            expected_hours_thu: number;
+            /**
+             * Expected Hours Fri
+             * @default 0
+             */
+            expected_hours_fri: number;
+            /**
+             * Expected Hours Sat
+             * @default 0
+             */
+            expected_hours_sat: number;
         };
         /** ChangePassword */
         ChangePassword: {
@@ -565,6 +660,11 @@ export interface components {
             project: number;
             /** Activity */
             activity: number;
+        };
+        /** EndSessionUserIds */
+        EndSessionUserIds: {
+            /** User Ids */
+            user_ids: number[];
         };
         /** TimeLogSummaryDTO */
         TimeLogSummaryDTO: {
@@ -864,7 +964,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PagedUserDTO"];
+                    "application/json": components["schemas"]["PagedUserListDTO"];
                 };
             };
             /** @description Bad Request */
@@ -1037,6 +1137,30 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_end_users_time_log: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EndSessionUserIds"];
+            };
+        };
         responses: {
             /** @description OK */
             200: {

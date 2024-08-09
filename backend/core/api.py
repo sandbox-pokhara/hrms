@@ -47,6 +47,7 @@ from core.schemas import TimeLogIds
 from core.schemas import TimeLogSummaryDTO
 from core.schemas import TimeLogSummaryPerDay
 from core.schemas import UserDTO
+from core.schemas import UserListDTO
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
 
@@ -128,15 +129,26 @@ def create_user(request: HttpRequest, user: CreateUser):
 
 
 @api.get(
-    "/users/", response={200: list[UserDTO], 400: GenericDTO}, auth=django_auth
+    "/users/",
+    response={200: list[UserListDTO], 400: GenericDTO},
+    auth=django_auth_superuser,
 )
 @paginate
 def list_users(request: HttpRequest):
-    if request.user.is_superuser:  # type: ignore
-        user_obj = User.objects.all()
-        return user_obj
-    else:
-        return 400, {"detail": "Unauthorized request."}
+    user_obj = User.objects.all()
+    users_data: list[dict[str, int | str | float]] = []
+    for user in user_obj:
+        absence_balance = AbsenceBalance.objects.filter(user=user).aggregate(
+            value=Coalesce(Sum("delta"), 0.0)
+        )
+        user_dict = {
+            field.name: getattr(user, field.name)
+            for field in user._meta.fields
+        }
+        user_dict["absence_balance"] = absence_balance["value"]
+        users_data.append(user_dict)
+
+    return users_data
 
 
 @api.post(

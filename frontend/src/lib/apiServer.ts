@@ -90,7 +90,7 @@ export async function getCurrentUser(): Promise<
 export async function getUsersList(
   page: number = 1,
   limit: number = 10
-): Promise<components["schemas"]["PagedUserDTO"]> {
+): Promise<components["schemas"]["PagedUserListDTO"]> {
   try {
     const res = await serverFetch(
       `/api/users/?limit=${limit}&offset=${(page - 1) * limit}`

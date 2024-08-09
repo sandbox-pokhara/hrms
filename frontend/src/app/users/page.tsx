@@ -36,26 +36,27 @@ export default async function Users({
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Sun
+              Expected Hrs Sun
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Mon
+              Expected Hrs Mon
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Tues
+              Expected Hrs Tues
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Wed
+              Expected Hrs Wed
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Thu
+              Expected Hrs Thu
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Fri
+              Expected Hrs Fri
             </TableHead>
             <TableHead className="whitespace-nowrap">
-              Expected Hours Sat
+              Expected Hrs Sat
             </TableHead>
+            <TableHead className="whitespace-nowrap">Absence Balance</TableHead>
           </TableRow>
         </TableHeader>
         {users ? (
@@ -70,6 +71,7 @@ export default async function Users({
                 <TableCell>{i.expected_hours_thu}</TableCell>
                 <TableCell>{i.expected_hours_fri}</TableCell>
                 <TableCell>{i.expected_hours_sat}</TableCell>
+                <TableCell>{i.absence_balance}</TableCell>
               </TableRow>
             ))}
           </TableBody>

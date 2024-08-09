@@ -20,6 +20,14 @@ class UserDTO(ModelSchema):
         exclude = ["password"]
 
 
+class UserListDTO(ModelSchema):
+    absence_balance: float
+
+    class Meta:
+        model = User
+        exclude = ["password", "user_permissions", "groups"]
+
+
 class TimeLogDTO(ModelSchema):
     project__name: str = Field(..., alias="project.name")
     activity__name: str = Field(..., alias="activity.name")
