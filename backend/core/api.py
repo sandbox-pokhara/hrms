@@ -135,20 +135,10 @@ def create_user(request: HttpRequest, user: CreateUser):
 )
 @paginate
 def list_users(request: HttpRequest):
-    user_obj = User.objects.all()
-    users_data: list[dict[str, int | str | float]] = []
-    for user in user_obj:
-        absence_balance = AbsenceBalance.objects.filter(user=user).aggregate(
-            value=Coalesce(Sum("delta"), 0.0)
-        )
-        user_dict = {
-            field.name: getattr(user, field.name)
-            for field in user._meta.fields
-        }
-        user_dict["absence_balance"] = absence_balance["value"]
-        users_data.append(user_dict)
-
-    return users_data
+    user_obj = User.objects.annotate(
+        absence_balance=Coalesce(Sum("absence_balances__delta"), 0.0)
+    )
+    return user_obj
 
 
 @api.post(
