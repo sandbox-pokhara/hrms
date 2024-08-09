@@ -43,11 +43,11 @@ export default function DataTable({
         : prevSelectedIds.filter((itemId) => itemId !== id)
     );
   };
-  const selectedActiveSessionUsernames = useMemo(() => {
+  const selectedActiveSessionUserIds = useMemo(() => {
     const timelogItems = timeLogs.items.filter(
       (tl) => tl?.id && tl.end === null && selectedIds.includes(tl?.id)
     );
-    return timelogItems.map((i) => i.user__username);
+    return timelogItems.map((i) => i.user);
   }, [selectedIds]);
 
   return (
@@ -64,7 +64,7 @@ export default function DataTable({
             />
             <Button
               variant="outline"
-              disabled={!selectedActiveSessionUsernames?.length}
+              disabled={!selectedActiveSessionUserIds?.length}
               onClick={async () => {
                 const csrftoken = getCookie("csrftoken");
                 if (!csrftoken) return false;
@@ -74,7 +74,7 @@ export default function DataTable({
                     "X-CSRFToken": csrftoken,
                   },
                   body: JSON.stringify({
-                    usernames: selectedActiveSessionUsernames,
+                    user_ids: selectedActiveSessionUserIds,
                   }),
                 });
                 if (res.ok) {

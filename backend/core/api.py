@@ -34,7 +34,7 @@ from core.schemas import CreateActivity
 from core.schemas import CreateProject
 from core.schemas import CreateUser
 from core.schemas import EditTimeLogs
-from core.schemas import EndSessionUsernames
+from core.schemas import EndSessionUserIds
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
 from core.schemas import Login
@@ -216,8 +216,8 @@ def end_time_log(request: HttpRequest):
 @api.post(
     "/time-logs/users/end/", auth=django_auth_superuser, response=GenericDTO
 )
-def end_users_time_log(request: HttpRequest, data: EndSessionUsernames):
-    users = get_list_or_404(User, username__in=data.usernames)
+def end_users_time_log(request: HttpRequest, data: EndSessionUserIds):
+    users = get_list_or_404(User, id__in=data.user_ids)
     updated_count = 0
     for user in users:
         updated_count += TimeLog.objects.filter(

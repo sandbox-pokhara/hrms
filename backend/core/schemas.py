@@ -127,5 +127,5 @@ class AddHoliday(Schema):
     date: datetime.date
 
 
-class EndSessionUsernames(Schema):
-    usernames: list[str]
+class EndSessionUserIds(Schema):
+    user_ids: list[int]
