@@ -1,4 +1,5 @@
 import datetime
+import httpx
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -403,3 +404,21 @@ def list_holidays(request: HttpRequest):
 def create_holiday(request: HttpRequest, data: AddHoliday):
     Holiday.objects.create(name=data.name, date=data.date)
     return 200, {"detail": "Success."}
+
+
+@api.get("/holidays/import/available-countries/")
+async def available_countries(request: HttpRequest):
+    url = "https://date.nager.at/Api/v2/AvailableCountries"
+
+    try:
+        async with httpx.AsyncClient() as client:
+            response =await client.get(url)
+            response.raise_for_status()
+            countries = response.json()
+        return 200, countries
+    except httpx.HTTPStatusError as e:
+        return 400, {"detail": f"HTTP error occured: {str(e)}"}
+    except httpx.RequestError as e:
+        return 400, {"detail": f"Request error occured: {str(e)}"}
+    except Exception as e:
+        return 400, {"detail": f"An error occured: {str(e)}"}
