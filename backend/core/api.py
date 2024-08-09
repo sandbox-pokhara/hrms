@@ -11,6 +11,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -208,6 +209,13 @@ def end_time_log(request: HttpRequest):
     TimeLog.objects.filter(user=request.user, end=None).update(
         end=timezone.now()
     )
+    return {"detail": "Success."}
+
+
+@api.post("/time-logs/{username}/end/", auth=django_auth_superuser, response=GenericDTO)
+def end_users_time_log(request: HttpRequest, username: str):
+    user = get_object_or_404(User, username=username)
+    TimeLog.objects.filter(user=user, end=None).update(end=timezone.now())
     return {"detail": "Success."}
 
 

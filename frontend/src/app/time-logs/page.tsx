@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Pagination from "@/components/pagination";
 import {
   getActivities,
+  getCurrentTimeLog,
   getCurrentUser,
   getProjects,
   getTimeLogs,
@@ -25,7 +26,7 @@ export default async function TimeLogs({
   const [timeLogs, currentUser, projects, activities] = await Promise.all([
     getTimeLogs(page),
     getCurrentUser(),
-    getProjects(),
+    getProjects(1, 100),
     getActivities(1, 100),
   ]);
 

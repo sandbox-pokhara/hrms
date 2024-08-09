@@ -130,8 +130,12 @@ export default function DataTable({
                 <TableCell className="whitespace-nowrap">
                   <TimeLogStart start={i.start} />
                 </TableCell>
-                <TableCell className="whitespace-nowrap">
-                  <TimeLogEnd end={i.end} />
+                <TableCell className="whitespace-nowrap w-[150px]">
+                  <TimeLogEnd
+                    end={i.end}
+                    username={i.user__username}
+                    currentUser={currentUser}
+                  />
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   {i.end
