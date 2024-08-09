@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { components } from "@/lib/schema";
+import { DateTimePicker } from "@/components/date-time-picker";
 
 interface Props {
   disabled: boolean;
@@ -42,15 +43,19 @@ export function EditTimeLogs({
   const router = useRouter();
   const [editProject, setEditProject] = useState<boolean>(false);
   const [editActivities, setEditActivities] = useState<boolean>(false);
+  const [editStartTime, setEditStartTime] = useState<boolean>(false);
+  const [editEndTime, setEditEndTime] = useState<boolean>(false);
   const [selectedActivityId, setSelectedActivityId] = useState<
     number | undefined
   >(undefined);
   const [selectedProjectId, setSelectedProjectId] = useState<
     number | undefined
   >(undefined);
+  const [startTime, setStartTime] = useState<Date | undefined>(undefined);
+  const [endTime, setEndTime] = useState<Date | undefined>(undefined);
 
   const onSubmit = async () => {
-    if (!selectedActivityId && !selectedProjectId) {
+    if (!selectedActivityId && !selectedProjectId && !startTime && !endTime) {
       toast({
         title: "0 log item(s) edited.",
       });
@@ -69,6 +74,8 @@ export function EditTimeLogs({
           time_log_ids: timeLogIds,
           activity_id: selectedActivityId,
           project_id: selectedProjectId,
+          start_time: startTime,
+          end_time: endTime,
         }),
       });
       if (res.ok) {
@@ -161,6 +168,36 @@ export function EditTimeLogs({
                 )}
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="username" className="text-left max-w-[70px] w-full">
+              Start Time
+            </Label>
+            <Checkbox
+              checked={editStartTime}
+              onCheckedChange={(v) => setEditStartTime(!!v)}
+            />
+            <DateTimePicker
+              disabled={!editStartTime}
+              value={startTime}
+              onChange={setStartTime}
+              hourCycle={12}
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="username" className="text-left max-w-[70px] w-full">
+              End Time
+            </Label>
+            <Checkbox
+              checked={editEndTime}
+              onCheckedChange={(v) => setEditEndTime(!!v)}
+            />
+            <DateTimePicker
+              disabled={!editEndTime}
+              value={endTime}
+              onChange={setEndTime}
+              hourCycle={12}
+            />
           </div>
         </div>
 
