@@ -11,6 +11,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.http import HttpResponse
+from django.shortcuts import get_list_or_404
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -33,6 +34,7 @@ from core.schemas import CreateActivity
 from core.schemas import CreateProject
 from core.schemas import CreateUser
 from core.schemas import EditTimeLogs
+from core.schemas import EndSessionUsernames
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
 from core.schemas import Login
@@ -209,6 +211,19 @@ def end_time_log(request: HttpRequest):
         end=timezone.now()
     )
     return {"detail": "Success."}
+
+
+@api.post(
+    "/time-logs/users/end/", auth=django_auth_superuser, response=GenericDTO
+)
+def end_users_time_log(request: HttpRequest, data: EndSessionUsernames):
+    users = get_list_or_404(User, username__in=data.usernames)
+    updated_count = 0
+    for user in users:
+        updated_count += TimeLog.objects.filter(
+            user=user, end__isnull=True
+        ).update(end=timezone.now())
+    return {"detail": f"{updated_count} users sessions terminated."}
 
 
 @api.get(

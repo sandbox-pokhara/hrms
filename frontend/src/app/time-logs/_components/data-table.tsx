@@ -14,11 +14,12 @@ import TimeLogEnd from "@/components/time-log-end";
 import { Checkbox } from "@/components/ui/checkbox";
 import TableEmptyState from "@/components/table-empty-state";
 import { components } from "@/lib/schema";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DeleteConfirmation from "@/components/delete-confirmation";
 import { EditTimeLogs } from "./edit-time-logs";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   timeLogs: components["schemas"]["PagedTimeLogDTO"];
@@ -42,6 +43,12 @@ export default function DataTable({
         : prevSelectedIds.filter((itemId) => itemId !== id)
     );
   };
+  const selectedActiveSessionUsernames = useMemo(() => {
+    const timelogItems = timeLogs.items.filter(
+      (tl) => tl?.id && tl.end === null && selectedIds.includes(tl?.id)
+    );
+    return timelogItems.map((i) => i.user__username);
+  }, [selectedIds]);
 
   return (
     <>
@@ -55,6 +62,36 @@ export default function DataTable({
               projects={projects}
               activities={activities}
             />
+            <Button
+              variant="outline"
+              disabled={!selectedActiveSessionUsernames?.length}
+              onClick={async () => {
+                const csrftoken = getCookie("csrftoken");
+                if (!csrftoken) return false;
+                const res = await fetch("/api/time-logs/users/end/", {
+                  method: "POST",
+                  headers: {
+                    "X-CSRFToken": csrftoken,
+                  },
+                  body: JSON.stringify({
+                    usernames: selectedActiveSessionUsernames,
+                  }),
+                });
+                if (res.ok) {
+                  const data = await res.json();
+                  toast({
+                    title: data?.detail,
+                  });
+                } else {
+                  toast({
+                    title: "Something went wrong!",
+                  });
+                }
+                router.refresh();
+              }}
+            >
+              End Session
+            </Button>
             <DeleteConfirmation
               disabled={!selectedIds.length}
               onSubmit={async () => {

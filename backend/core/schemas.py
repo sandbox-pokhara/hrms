@@ -125,3 +125,7 @@ class EditTimeLogs(Schema):
 class AddHoliday(Schema):
     name: str
     date: datetime.date
+
+
+class EndSessionUsernames(Schema):
+    usernames: list[str]
