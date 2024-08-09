@@ -315,6 +315,10 @@ def update_time_logs(request: HttpRequest, data: EditTimeLogs):
         update_fields["activity_id"] = data.activity_id
     if data.project_id is not None:
         update_fields["project_id"] = data.project_id
+    if data.start_time is not None:
+        update_fields["start"] = data.start_time
+    if data.end_time is not None:
+        update_fields["end"] = data.end_time
 
     try:
         updated_count = time_logs.update(**update_fields)
