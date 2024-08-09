@@ -1,4 +1,5 @@
 import datetime
+import requests
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -403,3 +404,13 @@ def list_holidays(request: HttpRequest):
 def create_holiday(request: HttpRequest, data: AddHoliday):
     Holiday.objects.create(name=data.name, date=data.date)
     return 200, {"detail": "Success."}
+
+
+@api.get("/holidays/import/available-countries/")
+def available_countries(request: HttpRequest):
+    response = requests.get("https://date.nager.at/Api/v2/AvailableCountries")
+    if response.status_code == 200:
+        countries = response.json()
+        return countries
+    else:
+        return 400, {"detail": "Failed to fetch available countries."}
