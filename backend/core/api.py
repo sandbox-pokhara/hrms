@@ -412,13 +412,9 @@ async def available_countries(request: HttpRequest):
 
     try:
         async with httpx.AsyncClient() as client:
-            response =await client.get(url)
+            response = await client.get(url)
             response.raise_for_status()
             countries = response.json()
         return 200, countries
-    except httpx.HTTPStatusError as e:
+    except httpx.HTTPError as e:
         return 400, {"detail": f"HTTP error occured: {str(e)}"}
-    except httpx.RequestError as e:
-        return 400, {"detail": f"Request error occured: {str(e)}"}
-    except Exception as e:
-        return 400, {"detail": f"An error occured: {str(e)}"}
