@@ -1,4 +1,5 @@
 import datetime
+import httpx
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
@@ -48,6 +49,7 @@ from core.schemas import TimeLogSummaryDTO
 from core.schemas import TimeLogSummaryPerDay
 from core.schemas import UserDTO
 from core.schemas import UserListDTO
+from core.schemas import AvailableCountries
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
 
@@ -420,3 +422,22 @@ def list_holidays(request: HttpRequest):
 def create_holiday(request: HttpRequest, data: AddHoliday):
     Holiday.objects.create(name=data.name, date=data.date)
     return 200, {"detail": "Success."}
+
+
+@api.get("/holidays/import/available-countries/", response=list[AvailableCountries], auth=django_auth_superuser)
+async def available_countries(request: HttpRequest):
+    url = "https://date.nager.at/Api/v2/AvailableCountries"
+
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            response.raise_for_status()
+            countries = response.json()
+
+            transformed_countries = [
+                {"countryCode": country["key"], "name": country["value"]}
+                for country in countries
+            ]
+        return 200, transformed_countries
+    except httpx.HTTPError as e:
+        return 400, {"detail": f"HTTP error occured: {str(e)}."}
