@@ -140,5 +140,5 @@ class EndSessionUserIds(Schema):
 
 
 class AvailableCountries(Schema):
-    countryCode: str
+    country_code: str
     name: str

@@ -424,7 +424,11 @@ def create_holiday(request: HttpRequest, data: AddHoliday):
     return 200, {"detail": "Success."}
 
 
-@api.get("/holidays/import/available-countries/", response=list[AvailableCountries], auth=django_auth_superuser)
+@api.get(
+    "/holidays/import/available-countries/",
+    response={200: list[AvailableCountries], 400: GenericDTO},
+    auth=django_auth_superuser,
+)
 async def available_countries(request: HttpRequest):
     url = "https://date.nager.at/Api/v2/AvailableCountries"
 
@@ -435,7 +439,7 @@ async def available_countries(request: HttpRequest):
             countries = response.json()
 
             transformed_countries = [
-                {"countryCode": country["key"], "name": country["value"]}
+                {"country_code": country["key"], "name": country["value"]}
                 for country in countries
             ]
         return 200, transformed_countries
