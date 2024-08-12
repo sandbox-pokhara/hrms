@@ -50,6 +50,7 @@ from core.schemas import TimeLogSummaryPerDay
 from core.schemas import UserDTO
 from core.schemas import UserListDTO
 from core.schemas import AvailableCountries
+from core.schemas import ImportHolidays
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
 
@@ -443,5 +444,35 @@ async def available_countries(request: HttpRequest):
                 for country in countries
             ]
         return 200, transformed_countries
+    except httpx.HTTPError as e:
+        return 400, {"detail": f"HTTP error occured: {str(e)}."}
+
+
+@api.post(
+        "/holidays/import/",
+        auth=django_auth_superuser,   
+        response={200: list[HolidayDTO], 400: GenericDTO},
+)
+def import_holidays(request: HttpRequest, data: ImportHolidays):
+    url = f"https://date.nager.at/Api/v3/PublicHolidays/{data.year}/{data.country_code}"
+
+    try:
+        with httpx.Client() as client:
+            response = client.get(url)
+            response.raise_for_status()
+            holidays = response.json()
+            
+            holiday_objects = [
+                Holiday(name=holiday["name"], date=holiday["date"])
+                for holiday in holidays
+            ]
+
+            Holiday.objects.bulk_create(holiday_objects)
+
+            created_holidays = Holiday.objects.filter(
+                name__in=[holiday.name for holiday in holiday_objects],
+                date__in=[holiday.date for holiday in holiday_objects]
+            )
+        return 200, created_holidays
     except httpx.HTTPError as e:
         return 400, {"detail": f"HTTP error occured: {str(e)}."}

@@ -142,3 +142,8 @@ class EndSessionUserIds(Schema):
 class AvailableCountries(Schema):
     country_code: str
     name: str
+
+
+class ImportHolidays(Schema):
+    year: int
+    country_code: str
