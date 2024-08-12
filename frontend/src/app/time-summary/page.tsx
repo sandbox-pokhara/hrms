@@ -15,11 +15,14 @@ import {
   endOfWeek,
   eachDayOfInterval,
   isSameDay,
+  startOfMonth,
+  endOfMonth,
 } from "date-fns";
 import { cn, convertHoursToHHMM } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { components } from "@/lib/schema";
+import DateFilter from "./_components/date-filter";
 
 export const metadata: Metadata = {
   title: "Time Summary - Sandbox HRMS",
@@ -38,15 +41,21 @@ export default async function TimeSummary({
     start?: string;
     end?: string;
     "show-difference"?: string;
+    "date-type"?: "weekly" | "monthly";
   };
 }) {
   const today = new Date();
+  const dateType = searchParams?.["date-type"]?.toLowerCase() || "weekly";
   const start = searchParams?.start
     ? new Date(searchParams.start)
-    : startOfWeek(today, { weekStartsOn: 0 });
+    : dateType === "weekly"
+    ? startOfWeek(today, { weekStartsOn: 0 })
+    : startOfMonth(today);
   const end = searchParams?.end
     ? new Date(searchParams.end)
-    : endOfWeek(today, { weekStartsOn: 0 });
+    : dateType === "weekly"
+    ? endOfWeek(today, { weekStartsOn: 0 })
+    : endOfMonth(today);
   const showDifference = searchParams?.["show-difference"] === "true";
 
   const formattedStart = format(start, "yyyy-MM-dd");
@@ -76,13 +85,25 @@ export default async function TimeSummary({
     <MainLayout currentUser={currentUser} active="time-summary">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-semibold md:text-2xl">Time Summary</h1>
-        <Button variant={showDifference ? "secondary" : "outline"} asChild>
-          <Link
-            href={`/time-summary/?start=${formattedStart}&end=${formattedEnd}&show-difference=${!showDifference}`}
+        <div className="inline-flex gap-3 items-center">
+          <DateFilter
+            dateType={dateType}
+            startDate={start}
+            endDate={end}
+            showDifference={showDifference}
+          />
+          <Button
+            size="sm"
+            variant={showDifference ? "secondary" : "outline"}
+            asChild
           >
-            Show Difference
-          </Link>
-        </Button>
+            <Link
+              href={`/time-summary/?start=${formattedStart}&end=${formattedEnd}&show-difference=${!showDifference}`}
+            >
+              Show Difference
+            </Link>
+          </Button>
+        </div>
       </div>
       <div className="w-full overflow-auto">
         <Table>
