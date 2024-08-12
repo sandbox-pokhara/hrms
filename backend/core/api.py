@@ -467,12 +467,7 @@ def import_holidays(request: HttpRequest, data: ImportHolidays):
                 for holiday in holidays
             ]
 
-            Holiday.objects.bulk_create(holiday_objects)
-
-            created_holidays = Holiday.objects.filter(
-                name__in=[holiday.name for holiday in holiday_objects],
-                date__in=[holiday.date for holiday in holiday_objects]
-            )
+            created_holidays = Holiday.objects.bulk_create(holiday_objects)            
         return 200, created_holidays
     except httpx.HTTPError as e:
         return 400, {"detail": f"HTTP error occured: {str(e)}."}
