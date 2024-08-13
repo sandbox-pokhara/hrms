@@ -483,19 +483,13 @@ def import_holidays(request: HttpRequest, data: ImportHolidays):
 @api.get(
     "/working-hours-summary/",
     response={200: WorkingHoursSummary, 400: GenericDTO},
+    auth=django_auth,
 )
 def working_hours_summary(request: HttpRequest):
-    if not request.user.is_authenticated:
-        return 200, {"detail": "Authentication required."}
     today = now().date()
     start_of_week = now() - timedelta(days=now().weekday())
-    end_of_week = start_of_week + timezone.timedelta(days=6)
     start_of_month = now().replace(day=1)
-    end_of_month = (start_of_month + timezone.timedelta(days=31)).replace(
-        day=1
-    ) - timezone.timedelta(days=1)
     start_of_year = now().replace(month=1, day=1)
-    end_of_year = today.replace(month=12, day=31)
     past_30_days = now() - timedelta(days=30)
 
     working_hours_queryset = TimeLog.objects.filter(user=request.user)
@@ -512,7 +506,7 @@ def working_hours_summary(request: HttpRequest):
     )
     hours_this_week = (
         working_hours_queryset.filter(
-            start__date__range=[start_of_week, end_of_week]
+            start__gt=start_of_week
         ).aggregate(
             hours=Sum(
                 ExpressionWrapper(
@@ -526,7 +520,7 @@ def working_hours_summary(request: HttpRequest):
     )
     hours_this_month = (
         working_hours_queryset.filter(
-            start__date__range=[start_of_month, end_of_month]
+            start__gt=start_of_month
         ).aggregate(
             hours=Sum(
                 ExpressionWrapper(
@@ -540,7 +534,7 @@ def working_hours_summary(request: HttpRequest):
     )
     hours_this_year = (
         working_hours_queryset.filter(
-            start__date__range=[start_of_year, end_of_year]
+            start__gt=start_of_year
         ).aggregate(
             hours=Sum(
                 ExpressionWrapper(
