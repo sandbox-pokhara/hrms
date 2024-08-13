@@ -147,3 +147,16 @@ class AvailableCountries(Schema):
 class ImportHolidays(Schema):
     year: int
     country_code: str
+
+
+class WorkingHoursGraph(Schema):
+    date: datetime.date
+    hours_worked: float
+
+
+class WorkingHoursSummary(Schema):
+    working_hours_today: float
+    working_hours_this_week: float
+    working_hours_this_month: float
+    working_hours_this_year: float
+    working_hours_graph: list[WorkingHoursGraph]
