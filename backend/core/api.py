@@ -500,47 +500,67 @@ def working_hours_summary(request: HttpRequest):
     aggregations = working_hours_queryset.aggregate(
         hours_today=Sum(
             Case(
-                When(start__date=today, then=ExpressionWrapper(F('end') - F('start'), output_field=DurationField())),
+                When(
+                    start__date=today,
+                    then=ExpressionWrapper(
+                        F("end") - F("start"), output_field=DurationField()
+                    ),
+                ),
                 default=Value(timedelta(0)),
-                output_field=DurationField()
+                output_field=DurationField(),
             )
         ),
         hours_this_week=Sum(
             Case(
-                When(start__gte=start_of_week, then=ExpressionWrapper(F('end') - F('start'), output_field=DurationField())),
+                When(
+                    start__gte=start_of_week,
+                    then=ExpressionWrapper(
+                        F("end") - F("start"), output_field=DurationField()
+                    ),
+                ),
                 default=Value(timedelta(0)),
-                output_field=DurationField()
+                output_field=DurationField(),
             )
         ),
         hours_this_month=Sum(
             Case(
-                When(start__gte=start_of_month, then=ExpressionWrapper(F('end') - F('start'), output_field=DurationField())),
+                When(
+                    start__gte=start_of_month,
+                    then=ExpressionWrapper(
+                        F("end") - F("start"), output_field=DurationField()
+                    ),
+                ),
                 default=Value(timedelta(0)),
-                output_field=DurationField()
+                output_field=DurationField(),
             )
         ),
         hours_this_year=Sum(
             Case(
-                When(start__gte=start_of_year, then=ExpressionWrapper(F('end') - F('start'), output_field=DurationField())),
+                When(
+                    start__gte=start_of_year,
+                    then=ExpressionWrapper(
+                        F("end") - F("start"), output_field=DurationField()
+                    ),
+                ),
                 default=Value(timedelta(0)),
-                output_field=DurationField()
+                output_field=DurationField(),
             )
         ),
     )
 
-    working_hours_graph=(
-            working_hours_queryset.filter(start__gte=past_30_days)
-            .values("start__date")
-            .annotate(
-                hours=Sum(
-                    ExpressionWrapper(
-                        F("end") - F("start"), output_field=DurationField()
-                    )
+    working_hours_graph = (
+        working_hours_queryset.filter(start__gte=past_30_days)
+        .values("start__date")
+        .annotate(
+            hours=Sum(
+                ExpressionWrapper(
+                    F("end") - F("start"), output_field=DurationField()
                 )
             )
-            .order_by("start__date")
         )
-    
+        .order_by("start__date")
+    )
+
     def timedelta_to_hours(td: Union[timedelta, int]) -> float:
         if isinstance(td, timedelta):
             return td.total_seconds() / 3600
@@ -557,9 +577,15 @@ def working_hours_summary(request: HttpRequest):
     ]
 
     return {
-        "working_hours_today": timedelta_to_hours(aggregations['hours_today']),
-        "working_hours_this_week": timedelta_to_hours(aggregations['hours_this_week']),
-        "working_hours_this_month": timedelta_to_hours(aggregations['hours_this_month']),
-        "working_hours_this_year": timedelta_to_hours(aggregations['hours_this_year']),
+        "working_hours_today": timedelta_to_hours(aggregations["hours_today"]),
+        "working_hours_this_week": timedelta_to_hours(
+            aggregations["hours_this_week"]
+        ),
+        "working_hours_this_month": timedelta_to_hours(
+            aggregations["hours_this_month"]
+        ),
+        "working_hours_this_year": timedelta_to_hours(
+            aggregations["hours_this_year"]
+        ),
         "working_hours_graph": graph_data,
     }
