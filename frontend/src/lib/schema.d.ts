@@ -348,6 +348,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/holidays/import/available-countries/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Available Countries */
+        get: operations["core_api_available_countries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/holidays/import/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Holidays */
+        post: operations["core_api_import_holidays"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/working-hours-summary/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Working Hours Summary */
+        get: operations["core_api_working_hours_summary"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -699,6 +750,10 @@ export interface components {
             activity_id?: number | null;
             /** Project Id */
             project_id?: number | null;
+            /** Start Time */
+            start_time?: string | null;
+            /** End Time */
+            end_time?: string | null;
         };
         /** TimeLogIds */
         TimeLogIds: {
@@ -804,6 +859,43 @@ export interface components {
              * Format: date
              */
             date: string;
+        };
+        /** AvailableCountries */
+        AvailableCountries: {
+            /** Country Code */
+            country_code: string;
+            /** Name */
+            name: string;
+        };
+        /** ImportHolidays */
+        ImportHolidays: {
+            /** Year */
+            year: number;
+            /** Country Code */
+            country_code: string;
+        };
+        /** WorkingHoursGraph */
+        WorkingHoursGraph: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Hours Worked */
+            hours_worked: number;
+        };
+        /** WorkingHoursSummary */
+        WorkingHoursSummary: {
+            /** Working Hours Today */
+            working_hours_today: number;
+            /** Working Hours This Week */
+            working_hours_this_week: number;
+            /** Working Hours This Month */
+            working_hours_this_month: number;
+            /** Working Hours This Year */
+            working_hours_this_year: number;
+            /** Working Hours Graph */
+            working_hours_graph: components["schemas"]["WorkingHoursGraph"][];
         };
     };
     responses: never;
@@ -1434,6 +1526,97 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_available_countries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailableCountries"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_import_holidays: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ImportHolidays"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HolidayDTO"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GenericDTO"];
+                };
+            };
+        };
+    };
+    core_api_working_hours_summary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkingHoursSummary"];
                 };
             };
             /** @description Bad Request */

@@ -185,3 +185,17 @@ export async function getTimeSummary(
     return null;
   }
 }
+
+export async function getWorkingTimeSummary(): Promise<
+  components["schemas"]["WorkingHoursSummary"] | null
+> {
+  try {
+    const res = await serverFetch(`/api/working-hours-summary/`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    if (isRedirectError(err)) throw err;
+    console.log(err);
+    return null;
+  }
+}

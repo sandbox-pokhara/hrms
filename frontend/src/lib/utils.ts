@@ -43,3 +43,9 @@ export function convertHoursToHHMM(hours: number): string {
 
   return `${formattedHours}:${formattedMinutes}`;
 }
+
+export const formatAsMonthDay = (value: string) =>
+  new Date(value).toLocaleString(undefined, {
+    day: "2-digit",
+    month: "short",
+  });
