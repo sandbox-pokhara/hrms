@@ -186,11 +186,13 @@ export async function getTimeSummary(
   }
 }
 
-export async function getWorkingTimeSummary(): Promise<
-  components["schemas"]["WorkingHoursSummary"] | null
-> {
+export async function getWorkingTimeSummary(
+  startDate: string
+): Promise<components["schemas"]["WorkingHoursSummary"] | null> {
   try {
-    const res = await serverFetch(`/api/working-hours-summary/`);
+    const res = await serverFetch(
+      `/api/working-hours-summary/?start_date=${startDate}`
+    );
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {

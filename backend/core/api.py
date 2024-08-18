@@ -1,8 +1,8 @@
 import datetime
-import httpx
 from datetime import timedelta
 from typing import Union
 
+import httpx
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
@@ -10,13 +10,13 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
-from django.db.models import Sum
-from django.db.models import F
-from django.db.models import ExpressionWrapper
-from django.db.models import DurationField
 from django.db.models import Case
-from django.db.models import When
+from django.db.models import DurationField
+from django.db.models import ExpressionWrapper
+from django.db.models import F
+from django.db.models import Sum
 from django.db.models import Value
+from django.db.models import When
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -39,6 +39,7 @@ from core.models import User
 from core.schemas import AbsenceBalanceDTO
 from core.schemas import ActivityDTO
 from core.schemas import AddHoliday
+from core.schemas import AvailableCountries
 from core.schemas import ChangePassword
 from core.schemas import CreateActivity
 from core.schemas import CreateProject
@@ -47,6 +48,7 @@ from core.schemas import EditTimeLogs
 from core.schemas import EndSessionUserIds
 from core.schemas import GenericDTO
 from core.schemas import HolidayDTO
+from core.schemas import ImportHolidays
 from core.schemas import Login
 from core.schemas import ProjectDTO
 from core.schemas import RemainingAbsences
@@ -58,8 +60,6 @@ from core.schemas import TimeLogSummaryDTO
 from core.schemas import TimeLogSummaryPerDay
 from core.schemas import UserDTO
 from core.schemas import UserListDTO
-from core.schemas import AvailableCountries
-from core.schemas import ImportHolidays
 from core.schemas import WorkingHoursSummary
 
 api = NinjaAPI(docs_url="/docs/", csrf=True)
@@ -492,12 +492,12 @@ def import_holidays(request: HttpRequest, data: ImportHolidays):
     response={200: WorkingHoursSummary, 400: GenericDTO},
     auth=django_auth,
 )
-def working_hours_summary(request: HttpRequest):
+def working_hours_summary(request: HttpRequest, start_date: datetime.date):
     today = now().date()
     start_of_week = now() - timedelta(days=now().weekday())
     start_of_month = now().replace(day=1)
     start_of_year = now().replace(month=1, day=1)
-    past_30_days = now() - timedelta(days=30)
+    # past_30_days = now() - timedelta(days=30)
 
     working_hours_queryset = TimeLog.objects.filter(user=request.user)
 
@@ -553,7 +553,7 @@ def working_hours_summary(request: HttpRequest):
     )
 
     working_hours_graph = (
-        working_hours_queryset.filter(start__gte=past_30_days)
+        working_hours_queryset.filter(start__gte=start_date)
         .values("start__date")
         .annotate(
             hours=Sum(

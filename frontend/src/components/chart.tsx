@@ -1,91 +1,125 @@
 "use client";
 
-import { formatAsMonthDay } from "@/lib/utils";
 import {
-  XAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  YAxis,
-  Tooltip,
-  TooltipProps,
-  BarChart,
   Bar,
+  BarChart,
+  Label,
+  Rectangle,
+  ReferenceLine,
+  XAxis,
 } from "recharts";
-import {
-  NameType,
-  ValueType,
-} from "recharts/types/component/DefaultTooltipContent";
 
-const CustomTooltip = ({
-  label,
-  active,
-  payload,
-  labelFormatter,
-}: TooltipProps<ValueType, NameType>) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-card p-2 border border-border rounded-sm">
-        <p className="text-card-foreground">
-          {labelFormatter ? labelFormatter(label, payload) : label}
-        </p>
-        {payload.map((item) => (
-          <p
-            key={item.name}
-            className="text-[hsl(var(--current-period-stroke))]"
-          >
-            {`${item.name}: ${
-              typeof item.value === "number"
-                ? item.value.toFixed(1)
-                : item.value
-            }`}
-          </p>
-        ))}
-      </div>
-    );
-  }
-  return null;
-};
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { components } from "@/lib/schema";
+import { convertHoursToHHMM } from "@/lib/utils";
 
 interface Props {
-  data: any;
+  data: components["schemas"]["WorkingHoursGraph"][];
+  hours_worked_today: number;
 }
 
-export default function Chart({ data }: Props) {
+export default function Component({ data, hours_worked_today }: Props) {
+  const averageHoursWorked =
+    data.reduce((acc, cur) => acc + cur.hours_worked, 0) / data.length;
+
   return (
-    <div className="flex flex-grow justify-center items-center">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart width={730} height={250} data={data}>
-          <CartesianGrid
-            stroke="hsl(var(--muted-foreground)/0.2)"
-            strokeDasharray="5 5"
-          />
-          <Tooltip
-            content={<CustomTooltip labelFormatter={formatAsMonthDay} />}
-            cursor={{
-              fill: "transparent",
+    <Card className="lg:max-w-md">
+      <CardHeader className="space-y-0 pb-2">
+        <CardDescription>Today</CardDescription>
+        <CardTitle className="text-4xl tabular-nums">
+          {convertHoursToHHMM(hours_worked_today)}{" "}
+          <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
+            hours
+          </span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer
+          config={{
+            hours_worked: {
+              label: "Hours Worked",
+              color: "hsl(var(--chart-1))",
+            },
+          }}
+        >
+          <BarChart
+            accessibilityLayer
+            margin={{
+              left: -4,
+              right: -4,
             }}
-          />
-          <XAxis
-            dataKey="date"
-            tickLine={false}
-            axisLine={{ stroke: "#ddd" }}
-            tickFormatter={formatAsMonthDay}
-          />
-          <YAxis
-            dataKey="hours_worked"
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value.toFixed(0)}`}
-            width={25}
-          />
-          <Bar
-            dataKey="hours_worked"
-            name="Hours Worked"
-            fill="#212129"
-            isAnimationActive={false}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+            data={data}
+          >
+            <Bar
+              dataKey="hours_worked"
+              fill="var(--color-hours_worked)"
+              radius={5}
+              fillOpacity={0.6}
+              activeBar={<Rectangle fillOpacity={0.8} />}
+            />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={4}
+              tickFormatter={(value) => {
+                return new Date(value).toLocaleDateString("en-US", {
+                  weekday: "short",
+                });
+              }}
+            />
+            <ChartTooltip
+              defaultIndex={2}
+              content={
+                <ChartTooltipContent
+                  hideIndicator
+                  className="w-[150px]"
+                  labelFormatter={(value) => {
+                    return new Date(value).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    });
+                  }}
+                />
+              }
+              cursor={false}
+            />
+            <ReferenceLine
+              y={averageHoursWorked - 2}
+              stroke="hsl(var(--muted-foreground))"
+              strokeDasharray="3 3"
+              strokeWidth={1}
+            >
+              <Label
+                position="insideBottomLeft"
+                value="Average Hours/Day"
+                offset={10}
+                fill="hsl(var(--foreground))"
+              />
+              <Label
+                position="insideTopLeft"
+                value={convertHoursToHHMM(averageHoursWorked)}
+                className="text-lg"
+                fill="hsl(var(--foreground))"
+                offset={10}
+                startOffset={100}
+              />
+            </ReferenceLine>
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
   );
 }

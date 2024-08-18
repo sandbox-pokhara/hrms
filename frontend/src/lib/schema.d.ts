@@ -1603,7 +1603,9 @@ export interface operations {
     };
     core_api_working_hours_summary: {
         parameters: {
-            query?: never;
+            query: {
+                start_date: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
