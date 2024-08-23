@@ -178,9 +178,9 @@ def change_password(request: HttpRequest, data: ChangePassword):
 @paginate
 def list_time_logs(request: HttpRequest):
     if request.user.is_superuser:  # type: ignore
-        objs = TimeLog.objects.all()
+        objs = TimeLog.objects.filter(user__is_active=True)
     else:
-        objs = TimeLog.objects.filter(user=request.user)
+        objs = TimeLog.objects.filter(user=request.user, user__is_active=True)
     return objs.order_by("-id")
 
 
@@ -190,7 +190,9 @@ def list_time_logs(request: HttpRequest):
     response={200: TimeLogDTO, 404: GenericDTO},
 )
 def current_time_log(request: HttpRequest):
-    obj = TimeLog.objects.filter(user=request.user, end=None).first()
+    obj = TimeLog.objects.filter(
+        user=request.user, end=None, user__is_active=True
+    ).first()
     if not obj:
         return 404, {"detail": "Not found."}
     return obj
@@ -254,14 +256,15 @@ def time_log_summary(
         start__date__gte=start,
         start__date__lte=end,
         end__isnull=False,
+        user__is_active=True,
     )
     absences = AbsenceBalance.objects.filter(
-        date__gte=start, date__lte=end, delta=-1
+        date__gte=start, date__lte=end, delta=-1, user__is_active=True
     )
     if request.user.is_superuser:  # type: ignore
-        users = User.objects.all()
+        users = User.objects.filter(is_active=True)
     else:
-        users = User.objects.filter(id=request.user.pk)
+        users = User.objects.filter(id=request.user.pk, is_active=True)
         logs = logs.filter(user=request.user)
         absences = absences.filter(user=request.user)
     logs = logs.values("user", "start", "end")
@@ -499,7 +502,9 @@ def working_hours_summary(request: HttpRequest, start_date: datetime.date):
     start_of_year = now().replace(month=1, day=1)
     # past_30_days = now() - timedelta(days=30)
 
-    working_hours_queryset = TimeLog.objects.filter(user=request.user)
+    working_hours_queryset = TimeLog.objects.filter(
+        user=request.user, user__is_active=True
+    )
 
     aggregations = working_hours_queryset.aggregate(
         hours_today=Sum(
