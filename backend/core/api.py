@@ -178,9 +178,9 @@ def change_password(request: HttpRequest, data: ChangePassword):
 @paginate
 def list_time_logs(request: HttpRequest):
     if request.user.is_superuser:  # type: ignore
-        objs = TimeLog.objects.all()
+        objs = TimeLog.objects.filter(user__is_active=True)
     else:
-        objs = TimeLog.objects.filter(user=request.user)
+        objs = TimeLog.objects.filter(user=request.user, user__is_active=True)
     return objs.order_by("-id")
 
 
@@ -259,9 +259,9 @@ def time_log_summary(
         date__gte=start, date__lte=end, delta=-1
     )
     if request.user.is_superuser:  # type: ignore
-        users = User.objects.all()
+        users = User.objects.filter(is_active=True)
     else:
-        users = User.objects.filter(id=request.user.pk)
+        users = User.objects.filter(id=request.user.pk, is_active=True)
         logs = logs.filter(user=request.user)
         absences = absences.filter(user=request.user)
     logs = logs.values("user", "start", "end")
