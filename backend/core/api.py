@@ -426,7 +426,7 @@ def auth_logout(request: HttpRequest):
 @api.get("/holidays/", response=list[HolidayDTO], auth=django_auth)
 @paginate
 def list_holidays(request: HttpRequest):
-    return Holiday.objects.all().order_by("-id")
+    return Holiday.objects.all().order_by("date")
 
 
 @api.post(
