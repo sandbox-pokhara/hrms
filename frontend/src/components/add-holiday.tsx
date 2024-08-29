@@ -17,6 +17,7 @@ import { Input } from "./ui/input";
 import { DatePicker } from "./date-picker";
 import { getCookie } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 
 export function AddHoliday() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export function AddHoliday() {
           "X-CSRFToken": csrftoken,
         },
         body: JSON.stringify({
-          date: date?.toISOString().split("T")[0],
+          date: date && format(date, "yyyy-MM-dd"),
           name: name,
         }),
       });
