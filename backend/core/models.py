@@ -2,7 +2,6 @@ from typing import Any
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.timezone import now
 
 
 class BaseModel(models.Model):
@@ -72,13 +71,6 @@ class TimeLog(BaseModel):
     activity = models.ForeignKey(
         Activity, on_delete=models.PROTECT, related_name="time_logs"
     )
-
-    def duration(self):
-        end_time = self.end if self.end else now()
-        duration = end_time - self.start
-        hours, remainder = divmod(int(duration.total_seconds()), 3600)
-        minutes = remainder // 60
-        return f"{hours}h{minutes}m"
 
     def __str__(self) -> str:
         return f"{self.user.username}:{self.project.name}:{self.activity.name}:{self.pk}"
