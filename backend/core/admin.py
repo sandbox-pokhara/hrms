@@ -90,6 +90,8 @@ class TimeLogAdmin(admin.ModelAdmin[TimeLog]):
         minutes = remainder // 60
         return f"{int(hours)}h{int(minutes)}m"
 
+    duration.admin_order_field = "duration"  # type: ignore
+
     class Meta:
         model = TimeLog
 
