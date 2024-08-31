@@ -717,7 +717,7 @@ export interface components {
             /** Activity */
             activity: number;
             /** Date */
-            date: string;
+            date?: string | null;
         };
         /** EndSessionUserIds */
         EndSessionUserIds: {
