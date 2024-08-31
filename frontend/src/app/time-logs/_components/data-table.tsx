@@ -137,6 +137,7 @@ export default function DataTable({
               </TableHead>
             )}
             <TableHead>User</TableHead>
+            <TableHead>Date</TableHead>
             <TableHead>Start</TableHead>
             <TableHead>End</TableHead>
             <TableHead>Duration</TableHead>
@@ -163,6 +164,9 @@ export default function DataTable({
                   {!i.end && (
                     <div className="w-1.5 h-1.5 overflow-hidden rounded-full bg-green-500" />
                   )}
+                </TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {new Date(i.date).toDateString()}
                 </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <TimeLogStart start={i.start} />

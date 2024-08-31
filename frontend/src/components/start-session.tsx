@@ -20,9 +20,10 @@ import { components } from "@/lib/schema";
 import { useState } from "react";
 import { toast } from "./ui/use-toast";
 import { Play } from "lucide-react";
+import { DatePicker } from "./date-picker";
 
 interface Props {
-  onSubmit: (projectId: number, activityId: number) => void;
+  onSubmit: (projectId: number, activityId: number, date: Date) => void;
   projects: components["schemas"]["PagedProjectDTO"];
   activities: components["schemas"]["PagedActivityDTO"];
 }
@@ -34,6 +35,7 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
   const [selectedProjectId, setSelectedProjectId] = useState<
     number | undefined
   >(undefined);
+  const [date, setDate] = useState<Date>(new Date());
 
   return (
     <Dialog>
@@ -98,6 +100,12 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
               </SelectContent>
             </Select>
           </div>
+          <div className="flex items-center gap-4">
+            <Label htmlFor="date" className="text-left max-w-[70px] w-full">
+              Date
+            </Label>
+            <DatePicker date={date} onChange={(d) => d && setDate(d)} />
+          </div>
         </div>
         <DialogFooter>
           <Button
@@ -107,7 +115,7 @@ export function StartSession({ onSubmit, projects, activities }: Props) {
                 return toast({
                   title: "Please select all fields.",
                 });
-              onSubmit(selectedProjectId, selectedActivityId);
+              onSubmit(selectedProjectId, selectedActivityId, date);
             }}
           >
             Start Session

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { StartSession } from "./start-session";
 import CountUp from "./count-up";
 import { CircleStop } from "lucide-react";
+import { format } from "date-fns";
 
 export default function TimeLogCard({
   initial,
@@ -62,7 +63,7 @@ export default function TimeLogCard({
     </Button>
   ) : (
     <StartSession
-      onSubmit={async (projectId, activityId) => {
+      onSubmit={async (projectId, activityId, date) => {
         const csrftoken = getCookie("csrftoken");
         if (!csrftoken) return null;
         const res = await fetch(`/api/time-logs/start/`, {
@@ -73,6 +74,7 @@ export default function TimeLogCard({
           body: JSON.stringify({
             project: projectId,
             activity: activityId,
+            date: format(date, "yyyy-MM-dd"),
           }),
         });
         if (res.status === 401) router.push("/login/");

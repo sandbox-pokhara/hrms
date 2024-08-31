@@ -700,6 +700,11 @@ export interface components {
             start: string;
             /** End */
             end?: string | null;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
             /** Project */
             project: number;
             /** Activity */
@@ -711,6 +716,8 @@ export interface components {
             project: number;
             /** Activity */
             activity: number;
+            /** Date */
+            date: string;
         };
         /** EndSessionUserIds */
         EndSessionUserIds: {
@@ -809,10 +816,15 @@ export interface components {
             /** Description */
             description: string;
             /**
-             * Date
+             * Start
              * Format: date
              */
-            date: string;
+            start: string;
+            /**
+             * End
+             * Format: date
+             */
+            end: string;
         };
         /** Login */
         Login: {
