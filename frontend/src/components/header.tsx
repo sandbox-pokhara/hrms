@@ -150,7 +150,7 @@ export default function Header({
       </Sheet>
       <div className="w-full flex-1">
         <form>
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <CommandMenu isSuperUser={currentUser?.is_superuser} />
           </div>
         </form>
