@@ -108,7 +108,7 @@ class HolidayAdmin(admin.ModelAdmin[Holiday]):
 
 @admin.register(AbsenceBalance)
 class AbsenceBalanceAdmin(admin.ModelAdmin[AbsenceBalance]):
-    search_fields = ["id", "user", "description"]
+    search_fields = ["id", "user__username", "description"]
     list_display = ["id", "user", "date", "description", "delta", "created_by"]
 
     class Meta:
