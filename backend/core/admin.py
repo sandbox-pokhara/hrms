@@ -37,6 +37,7 @@ class UserAdmin(BaseUserAdmin):
                     "expected_hours_thu",
                     "expected_hours_fri",
                     "expected_hours_sat",
+                    "max_time_log_length",
                 )
             },
         ),
