@@ -1,25 +1,57 @@
-# hrms
+<p align="center" style="margin-top: 120px">
+  <h3 align="center">Sandbox HRMS</h3>
+  <p align="center">The Open Source Human Resource Management System</p>
 
-Open Source Human Resource Management System
+  <p align="center">
+  <img src='./docs/images/hrms.jpg'>
+  </a>
+  </p>
 
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/dashboard.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/time_logs.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/time_summary.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/holidays.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/absences.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/users.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/activities.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/projects.png)
-![Project Image](https://github.com/sandbox-pokhara/hrms/blob/a5f6be131087db378ac82a5154acb751cfd6cf71/static/images/settings.png)
+</p>
 
-## Usage
+## About Sandbox HRMS
 
-1. Download `docker-compose.sample.yml` and rename it to `docker-compose.yml`.
-2. Start using `docker compose`.
+Open Source, modern, and easy-to-use HRMS software for small and medium organizations developed by [Sandbox](https://sandbox.com.np).
 
-   ```
+## Getting Started 🚀
+
+Run the following command to download the latest version of the docker compose file.
+   ```sh
+   curl https://raw.githubusercontent.com/sandbox-pokhara/hrms/refs/heads/master/docker-compose.sample.yml -o docker-compose.yml
    docker compose up
    ```
+
+> [!IMPORTANT]
+> Make sure to change the enviornment values before deploying.
+
+## 🙌 Contributing
+
+If you have any ideas for improvement, feel free to fork the repository, make your changes, and submit a pull request. Alternatively, you can open an issue with the "enhancement" label. And don’t forget to give the project a star—thank you for your support!
+
+## Contributors ✨
+
+<a href="https://github.com/sandbox-pokhara/hrms/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=sandbox-pokhara/hrms" />
+</a>
+
+
+## 🖼 More Screenshots
+
+![Project Image](./docs/images/time_logs.png)
+
+![Project Image](./docs/images/time_summary.png)
+
+![Project Image](./docs/images/holidays.png)
+
+![Project Image](./docs/images/absences.png)
+
+![Project Image](./docs/images/users.png)
+
+![Project Image](./docs/images/activities.png)
+
+![Project Image](./docs/images/projects.png)
+
+![Project Image](./docs/images/settings.png)
 
 ## License
 
