@@ -80,7 +80,7 @@ export default async function TimeSummary({
   };
 }) {
   const today = new Date();
-  const dateType = searchParams?.["date-type"]?.toLowerCase() || "weekly";
+  const dateType = searchParams?.["date-type"]?.toLowerCase() || "monthly";
   const start = searchParams?.start
     ? new Date(searchParams.start)
     : dateType === "weekly"
