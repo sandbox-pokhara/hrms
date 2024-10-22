@@ -3,7 +3,6 @@ from datetime import timedelta
 from typing import Union
 
 import httpx
-import pytz
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
@@ -275,7 +274,7 @@ def time_log_summary(
     }
     output: list[TimeLogSummaryDTO] = []
 
-    current_time = datetime.datetime.now(pytz.UTC)
+    current_time = timezone.now()
     for u in users:
         user_data = TimeLogSummaryDTO(user=u.username, summary=[])
         date = start
