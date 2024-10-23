@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
-import { intervalToDuration } from "date-fns";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -45,3 +45,7 @@ export const formatAsMonthDay = (value: string) =>
     day: "2-digit",
     month: "short",
   });
+
+export const getDateOnly = (value: string) => {
+  return new Date(format(new Date(value), "yyyy-MM-dd"));
+};

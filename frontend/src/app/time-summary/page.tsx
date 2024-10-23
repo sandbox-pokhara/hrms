@@ -18,7 +18,7 @@ import {
   startOfMonth,
   endOfMonth,
 } from "date-fns";
-import { cn, convertHoursToHHMM } from "@/lib/utils";
+import { cn, convertHoursToHHMM, getDateOnly } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { components } from "@/lib/schema";
@@ -51,12 +51,20 @@ function getCellContent(
     ? [convertHoursToHHMM(dayData.hours_worked), "text-green-600"]
     : dayData.holiday
     ? [
-        <TooltipCell trigger="Holiday" content={dayData.holiday} />,
+        <TooltipCell
+          trigger="Holiday"
+          content={dayData.holiday}
+          key={dayData.date}
+        />,
         "text-green-600",
       ]
     : dayData.absence
     ? [
-        <TooltipCell trigger="Time Off" content={dayData.absence} />,
+        <TooltipCell
+          trigger="Time Off"
+          content={dayData.absence}
+          key={dayData.date}
+        />,
         "text-blue-600",
       ]
     : dayData.expected_hours === 0
@@ -211,17 +219,23 @@ export default async function TimeSummary({
                         )}
                       </TableCell>
                       {dateRange.map((date) => {
+                        if (
+                          getDateOnly(userSummary.user_date_joined) >
+                          getDateOnly(String(date))
+                        ) {
+                          return (
+                            <TableCell key={date.toISOString()}>-</TableCell>
+                          );
+                        }
+
                         const dayData:
                           | components["schemas"]["TimeLogSummaryPerDay"]
                           | undefined = userSummary.summary.find(
                           (item) => item.date === format(date, "yyyy-MM-dd")
                         );
+
                         if (!dayData || new Date(dayData?.date) > new Date())
                           return <TableCell key={date.toISOString()} />;
-
-                        const difference =
-                          (dayData.hours_worked || 0) -
-                          (dayData.expected_hours || 0);
 
                         const [content, color] = showDifference
                           ? getCellContentDifference(dayData)

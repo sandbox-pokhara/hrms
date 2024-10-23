@@ -276,7 +276,7 @@ def time_log_summary(
 
     current_time = timezone.now()
     for u in users:
-        user_data = TimeLogSummaryDTO(user=u.username, summary=[])
+        user_data = TimeLogSummaryDTO(user=u.username, user_date_joined=u.date_joined, summary=[])
         date = start
         while date <= end:
             logs_per_day = [

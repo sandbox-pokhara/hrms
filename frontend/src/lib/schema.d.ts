@@ -555,6 +555,12 @@ export interface components {
              */
             expected_hours_sat: number;
             /**
+             * Max Time Log Length
+             * Format: duration
+             * @default PT0S
+             */
+            max_time_log_length: string;
+            /**
              * Groups
              * @description The groups this user belongs to. A user will get all permissions granted to each of their groups.
              */
@@ -656,6 +662,12 @@ export interface components {
              * @default 0
              */
             expected_hours_sat: number;
+            /**
+             * Max Time Log Length
+             * Format: duration
+             * @default PT0S
+             */
+            max_time_log_length: string;
         };
         /** ChangePassword */
         ChangePassword: {
@@ -728,6 +740,11 @@ export interface components {
         TimeLogSummaryDTO: {
             /** User */
             user: string;
+            /**
+             * User Date Joined
+             * Format: date-time
+             */
+            user_date_joined: string;
             /** Summary */
             summary: components["schemas"]["TimeLogSummaryPerDay"][];
         };

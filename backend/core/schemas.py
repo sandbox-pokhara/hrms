@@ -111,6 +111,7 @@ class TimeLogSummaryPerDay(Schema):
 
 class TimeLogSummaryDTO(Schema):
     user: str
+    user_date_joined: datetime.datetime
     summary: list[TimeLogSummaryPerDay]
 
 
